@@ -10,7 +10,7 @@ function solve(actualInput, transformation, targetOutput) {
   var stepWidth = 1.0;
   var direction = +1; // D = {-1, +1}
   var counter = 0;
-  while(difference >= 0.001 || counter < 1000) {
+  while(difference >= 0.001 && counter < 1000) {
     
     var newDifference = Math.abs(transformation(targetInput+(stepWidth*direction)) - targetOutput);
     
