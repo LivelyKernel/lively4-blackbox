@@ -2,6 +2,9 @@
 <script>
   var inc = function(x) { return x+1 };
   var double = function(x) { return x*2 };
+  var magic = function(x) { return (x+1)*2-1 };
   lively.notify(solve(2, double, 24));
   lively.notify(solve(2, double, -12));
+  lively.notify(2*solve(2, double, -27.1));
+  lively.notify(solve(2, magic, 28));
 </script>
