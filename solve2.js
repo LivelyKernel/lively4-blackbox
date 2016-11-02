@@ -2,11 +2,11 @@
 
 function solve2(actualInput, transformation, targetOutput) { 
   // 1. find changes output values
-  // 2. find corresponding input values
+  // 2. find corresponding input values;
+  //    or: output is independent -> no solution
   // 3. solve!
   // 4. ???
   // 5. success / profit
-  
 }
 
 function findDependencies(actualInput, transformation) {
