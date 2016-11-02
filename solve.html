@@ -4,9 +4,23 @@
   var double = function(x) { return x*2 };
   var magic = function(x) { return (x+1)*2-1 };
   var watman = function(x) { return 10*(0.1*x)^2-(0.1*x)^4+2 };
-  //lively.notify(solve(2, double, 24));
-  //lively.notify(solve(2, double, -12));
-  //lively.notify(2*solve(2, double, -27.1));
-  lively.notify(solve(2, magic, 28));
-  //lively.notify(solve(2, watman, 20));
+  function solveForInput() {
+    x = parseFloat(document.getElementById("solve1x").value);
+    y = parseFloat(document.getElementById("solve1y").value);
+    func = document.getElementById("solve1func").value;
+    if(isNaN(x) || isNaN(y)) {
+      return;
+    }
+    lively.notify(solve(x, window[func], y))
+  }
 </script>
+y = f(x) = 
+<select id="solve1func">
+  <option value="inc">x+1</option>
+  <option value="double">2x</option>
+  <option value="magic">2(x+1) - 1</option>
+  <option value="watman">10(0.1x)^2 - (0.1x)^4 + 2</option>
+</select><br/>
+x = <input type="text" id="solve1x"></input><br/>
+y = <input type="text" id="solve1y"></input><br/>
+<button type="button" onclick="solveForInput()">solve for x</button>
