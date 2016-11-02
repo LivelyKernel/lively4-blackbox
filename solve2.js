@@ -1,6 +1,8 @@
 // assumption: input and output are flat dictionaries
 
-function solve2(actualInput, transformation, targetOutput) {
+function solve2(actualInput, transformation, targetOutput) { }
+
+function findDependencies(actualInput, transformation) {
   // finding dependencies
   var dependencies = {};
   var actualOutput = transformation(actualInput);
@@ -39,8 +41,8 @@ function solve2(actualInput, transformation, targetOutput) {
       });
     });
   
-    dependencies[i] = influenced;
+    dependencies[i] = Array.from(influenced);
   }
   
-  console.log(dependencies);
+  return dependencies;
 }
