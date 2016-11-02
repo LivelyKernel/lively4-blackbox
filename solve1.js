@@ -1,4 +1,4 @@
-function solve(actualInput, transformation, targetOutput) {
+function solve1(actualInput, transformation, targetOutput) {
   // assumption: input and output are integers
   actualOutput = transformation(actualInput);
   if(actualOutput == targetOutput) {
