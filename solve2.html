@@ -1,0 +1,13 @@
+<script src="./solve2.js"></script>
+<script>
+  var flatObjId = function(x) {
+    var result = {};
+    for(var i in x) {
+      result[i] = x[i];
+    }
+    return result;
+  };
+  var obj0 = {"raccoons": "are", "super": "awesome"};
+  
+  solve2(obj0, flatObjId, obj0);
+</script>
