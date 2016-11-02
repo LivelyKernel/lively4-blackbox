@@ -1,6 +1,13 @@
 // assumption: input and output are flat dictionaries
 
-function solve2(actualInput, transformation, targetOutput) { }
+function solve2(actualInput, transformation, targetOutput) { 
+  // 1. find changes output values
+  // 2. find corresponding input values
+  // 3. solve!
+  // 4. ???
+  // 5. success / profit
+  
+}
 
 function findDependencies(actualInput, transformation) {
   // finding dependencies
