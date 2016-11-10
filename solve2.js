@@ -8,7 +8,7 @@ function solve2(actualInput, transformation, targetOutput) {
   var dependencies = findDependencies(actualInput, transformation);
   var targetInput = Object.assign({}, actualInput);
   
-  for (var variedOutputKey in Array.from(varyingKeys)) {
+  varyingKeys.forEach(function(variedOutputKey){
     // 2. find corresponding input values;
     //    or: output is independent -> no solution
     var affectingInputKeys = new Set();
@@ -18,8 +18,7 @@ function solve2(actualInput, transformation, targetOutput) {
       if(dependantOutputKeys.includes(variedOutputKey)) {
         affectingInputKeys.add(inputKey);
         if(dependantOutputKeys.length > 1) {
-          console.error("Function not surjective.");
-          return;
+          throw "Error: Function is not surjective."
         }
       }
     }
@@ -28,7 +27,7 @@ function solve2(actualInput, transformation, targetOutput) {
     for (var solvedInputKey in solutions) {
       targetInput[solvedInputKey] = solutions[solvedInputKey];
     }
-  }
+  });
   
   return targetInput;
   
