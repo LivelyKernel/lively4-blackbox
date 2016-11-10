@@ -37,7 +37,7 @@ function solve2(actualInput, transformation, targetOutput) {
 }
 
 function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey) {
-  if(affectingInputKeys.length == 1) {
+  if(affectingInputKeys.size == 1) {
     if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[variedOutputKey]) == "number") {
       var newTranformation = function(singleIntegerInput) {
         var inputJSON = Object.assign({}, actualInput);
@@ -46,7 +46,9 @@ function solveForSingleOutput(actualInput, transformation, targetOutput, affecti
       };
       var resultKeyName = Array.from(affectingInputKeys)[0];
       var resultValue = solveForIntegerToInteger(actualInput[Array.from(affectingInputKeys)[0]], newTranformation, targetOutput[variedOutputKey]);
-      return {resultKeyName : resultValue};
+      var result = {};
+      result[resultKeyName] = resultValue;
+      return result;
     }
   }
   
