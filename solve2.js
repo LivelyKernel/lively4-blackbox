@@ -6,8 +6,9 @@ function solve2(actualInput, transformation, targetOutput) {
   var actualOutput = transformation(actualInput);
   var varyingKeys = findVaryingKeys(actualOutput, targetOutput);
   var dependencies = findDependencies(actualInput, transformation);
+  var targetInput = Object.assign({}, actualInput);
   
-  for (var variedOutputKey in varyingKeys) {
+  for (var variedOutputKey in Array.from(varyingKeys)) {
     // 2. find corresponding input values;
     //    or: output is independent -> no solution
     var affectingInputKeys = new Set();
@@ -23,10 +24,13 @@ function solve2(actualInput, transformation, targetOutput) {
       }
     }
     
-    solveForSingleOutput(actualInput, transformation, targetOutput,
-                          affectingInputKeys, variedOutputKey);
+    var solutions = solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey);
+    for (var solvedInputKey in solutions) {
+      targetInput[solvedInputKey] = solutions[solvedInputKey];
+    }
   }
   
+  return targetInput;
   
   // 3. solve!
   // 4. ???
@@ -36,9 +40,18 @@ function solve2(actualInput, transformation, targetOutput) {
 function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey) {
   if(affectingInputKeys.length == 1) {
     if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[variedOutputKey]) == "number") {
-      
+      var newTranformation = function(singleIntegerInput) {
+        var inputJSON = Object.assign({}, actualInput);
+        inputJSON[Array.from(affectingInputKeys)[0]] = singleIntegerInput;
+        return transformation(inputJSON)[variedOutputKey];
+      };
+      var resultKeyName = Array.from(affectingInputKeys)[0];
+      var resultValue = solveForIntegerToInteger(actualInput[Array.from(affectingInputKeys)[0]], newTranformation, targetOutput[variedOutputKey]);
+      return {resultKeyName : resultValue};
     }
   }
+  
+  return {};
 }
 
 function findDependencies(actualInput, transformation) {

@@ -1,3 +1,4 @@
+<script src="./solve1.js"></script>
 <script src="./solve2.js"></script>
 <script>
   var flatObjId = function(x) {
@@ -7,7 +8,8 @@
     }
     return result;
   };
-  var obj0 = {"raccoons": "are", "super": "awesome"};
+  var obj0 = {"raccoons": 1, "super": 2};
+  var obj1 = {"raccoons": 1, "super": 3};
   
-  console.log(findDependencies(obj0, flatObjId));
+  console.log(solve2(obj0, flatObjId, obj1));
 </script>
