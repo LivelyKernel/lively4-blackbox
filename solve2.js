@@ -1,12 +1,44 @@
 // assumption: input and output are flat dictionaries
 
+
 function solve2(actualInput, transformation, targetOutput) { 
   // 1. find changes output values
-  // 2. find corresponding input values;
-  //    or: output is independent -> no solution
+  var actualOutput = transformation(actualInput);
+  var varyingKeys = findVaryingKeys(actualOutput, targetOutput);
+  var dependencies = findDependencies(actualInput, transformation);
+  
+  for (var variedOutputKey in varyingKeys) {
+    // 2. find corresponding input values;
+    //    or: output is independent -> no solution
+    var affectingInputKeys = new Set();
+    
+    for (var inputKey in dependencies) {
+      var dependantOutputKeys = dependencies[inputKey];
+      if(dependantOutputKeys.includes(variedOutputKey)) {
+        affectingInputKeys.add(inputKey);
+        if(dependantOutputKeys.length > 1) {
+          console.error("Function not surjective.");
+          return;
+        }
+      }
+    }
+    
+    solveForSingleOutput(actualInput, transformation, targetOutput,
+                          affectingInputKeys, variedOutputKey);
+  }
+  
+  
   // 3. solve!
   // 4. ???
   // 5. success / profit
+}
+
+function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey) {
+  if(affectingInputKeys.length == 1) {
+    if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[variedOutputKey]) == "number") {
+      
+    }
+  }
 }
 
 function findDependencies(actualInput, transformation) {
@@ -36,15 +68,8 @@ function findDependencies(actualInput, transformation) {
       diffInput[i] = j;
       var diffOutput = transformation(diffInput);
   
-      // collecting keys
-      var keys = new Set(Object.keys(diffOutput));
-      Object.keys(actualOutput).forEach(function(key) { keys.add(key) });
-  
-      // searching for influenced variables
-      keys.forEach(function(key) { 
-        if(actualOutput[key] != diffOutput[key]) {
-          influenced.add(key);
-        }
+      findVaryingKeys(actualOutput, diffOutput).forEach(function(element) {
+        influenced.add(element);
       });
     });
   
@@ -52,4 +77,21 @@ function findDependencies(actualInput, transformation) {
   }
   
   return dependencies;
+}
+
+function findVaryingKeys(json1, json2) {
+  var result = new Set();
+
+  // collecting keys
+  var keys = new Set(Object.keys(json1));
+  Object.keys(json2).forEach(function(key) { keys.add(key) });
+  
+  // searching for influenced variables
+  keys.forEach(function(key) {
+    if(json1[key] != json2[key]) {
+      result.add(key);
+    }
+  });
+  
+  return result;
 }
