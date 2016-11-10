@@ -2,50 +2,54 @@
 
 
 function solve2(actualInput, transformation, targetOutput) { 
-  // 1. find changes output values
-  var actualOutput = transformation(actualInput);
-  var varyingKeys = findVaryingKeys(actualOutput, targetOutput);
+  
   var dependencies = findDependencies(actualInput, transformation);
   var targetInput = Object.assign({}, actualInput);
   
-  varyingKeys.forEach(function(variedOutputKey){
+  // 1. find changes output values
+  var actualOutput = transformation(actualInput);
+  var modifiedOutputKeys = findVaryingKeys(actualOutput, targetOutput);
+  
+  modifiedOutputKeys.forEach(function(modifiedOutputKey){
     // 2. find corresponding input values;
     //    or: output is independent -> no solution
     var affectingInputKeys = new Set();
     
     for (var inputKey in dependencies) {
       var dependantOutputKeys = dependencies[inputKey];
-      if(dependantOutputKeys.includes(variedOutputKey)) {
+      if(dependantOutputKeys.includes(modifiedOutputKey)) {
         affectingInputKeys.add(inputKey);
+        
         if(dependantOutputKeys.length > 1) {
           throw "Error: Function is not surjective."
+        }
+        
+        if(dependantOutputKeys.length == 0) {
+          throw "Error: Modified output variable seems to be independent from input variables."
         }
       }
     }
     
-    var solutions = solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey);
+    // 3. solving: for each modified output variable, find solution by modifying affecting input keys
+    var solutions = solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
     for (var solvedInputKey in solutions) {
       targetInput[solvedInputKey] = solutions[solvedInputKey];
     }
   });
   
   return targetInput;
-  
-  // 3. solve!
-  // 4. ???
-  // 5. success / profit
 }
 
-function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, variedOutputKey) {
+function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
   if(affectingInputKeys.size == 1) {
-    if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[variedOutputKey]) == "number") {
+    if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
       var newTranformation = function(singleIntegerInput) {
         var inputJSON = Object.assign({}, actualInput);
         inputJSON[Array.from(affectingInputKeys)[0]] = singleIntegerInput;
-        return transformation(inputJSON)[variedOutputKey];
+        return transformation(inputJSON)[modifiedOutputKey];
       };
       var resultKeyName = Array.from(affectingInputKeys)[0];
-      var resultValue = solveForIntegerToInteger(actualInput[Array.from(affectingInputKeys)[0]], newTranformation, targetOutput[variedOutputKey]);
+      var resultValue = solveForIntegerToInteger(actualInput[Array.from(affectingInputKeys)[0]], newTranformation, targetOutput[modifiedOutputKey]);
       var result = {};
       result[resultKeyName] = resultValue;
       return result;
