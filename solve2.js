@@ -21,16 +21,17 @@ function solve2(actualInput, transformation, targetOutput) {
         affectingInputKeys.add(inputKey);
         
         if(dependantOutputKeys.length > 1) {
-          throw "Error: Function is not surjective."
+          throw "Error: Function is not surjective.";
         }
         
-        if(dependantOutputKeys.length == 0) {
-          throw "Error: Modified output variable seems to be independent from input variables."
+        if(dependantOutputKeys.length === 0) {
+          throw "Error: Modified output variable seems to be independent from input variables.";
         }
       }
     }
     
     // 3. solving: for each modified output variable, find solution by modifying affecting input keys
+    affectingInputKeys = Array.from(affectingInputKeys);
     var solutions = solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
     for (var solvedInputKey in solutions) {
       targetInput[solvedInputKey] = solutions[solvedInputKey];
@@ -41,17 +42,22 @@ function solve2(actualInput, transformation, targetOutput) {
 }
 
 function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
-  if(affectingInputKeys.size == 1) {
-    if(typeof(actualInput[Array.from(affectingInputKeys)[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
-      var newTranformation = function(singleIntegerInput) {
-        var inputJSON = Object.assign({}, actualInput);
-        inputJSON[Array.from(affectingInputKeys)[0]] = singleIntegerInput;
-        return transformation(inputJSON)[modifiedOutputKey];
-      };
-      var resultKeyName = Array.from(affectingInputKeys)[0];
-      var resultValue = solveForIntegerToInteger(actualInput[Array.from(affectingInputKeys)[0]], newTranformation, targetOutput[modifiedOutputKey]);
+  // assumption for now: function is not only surjective but also injective and therefore bijective
+  if(affectingInputKeys.length == 1) {
+    
+    // wrap transformation function to appear like a single variable (bijective) transformation
+    var bijectiveTranformation = function(singleVariableInput) {
+      var modifiedInput = Object.assign({}, actualInput);
+      modifiedInput[affectingInputKeys[0]] = singleVariableInput;
+      return transformation(modifiedInput)[modifiedOutputKey];
+    };
+    
+    // case 0: number -> number
+    if(typeof(actualInput[affectingInputKeys[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
+      var resultKey = affectingInputKeys[0];
+      var resultValue = solveForNumberToNumber(actualInput[affectingInputKeys[0]], bijectiveTranformation, targetOutput[modifiedOutputKey]);
       var result = {};
-      result[resultKeyName] = resultValue;
+      result[resultKey] = resultValue;
       return result;
     }
   }

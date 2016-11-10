@@ -1,6 +1,6 @@
 // assumption: input and output are integers
 
-function solveForIntegerToInteger(actualInput, transformation, targetOutput) {
+function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   actualOutput = transformation(actualInput);
   if(actualOutput == targetOutput) {
     return actualInput;
