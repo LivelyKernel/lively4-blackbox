@@ -1,5 +1,5 @@
-<script src="./solve-partial.js"></script>
-<script>
+<script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
+<script type="text/javascript">
   var inc = function(x) { return x+1 };
   var double = function(x) { return x*2 };
   var magic = function(x) { return (x+1)*2-1 };
@@ -20,7 +20,7 @@ y = f(x) =
   <option value="double">2x</option>
   <option value="magic">2(x+1) - 1</option>
   <option value="watman">10(0.1x)^2 - (0.1x)^4 + 2</option>
-</select><br/>
-x = <input type="text" id="solve1x"></input><br/>
-y = <input type="text" id="solve1y"></input><br/>
+</select><br>
+x = <input type="text" id="solve1x"><br>
+y = <input type="text" id="solve1y"><br>
 <button type="button" onclick="solveForInput()">solve for x</button>
