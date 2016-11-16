@@ -1,24 +1,41 @@
-<script src="./solve-partial.js"></script>
-<script src="./solve-compound.js"></script>
-<script>
-  var flatObjId = function(x) {
-    var result = {};
-    for(var i in x) {
-      result[i] = x[i];
-    }
-    return result;
-  };
-  
-  var flatObjDouble = function(x) {
-    var result = {}
-    for(var i in x) {
-      result[i] = x[i]*2;
-    }
-    return result;
-  }
-  var obj0 = {"raccoons": 1, "super": 2};
-  var obj1 = {"raccoons": 50, "super": 30};
+<!DOCTYPE html>
+<html>
+  <body>
+    <textarea id="input" cols="30" rows="10">{"raccoons":1,"super":2}</textarea>
+    <textarea id="output" cols="30" rows="10"></textarea>
+    <br/>
+    <button type="button" onclick="generateOutput()">generate output for given input</button>
+    <button type="button" onclick="generateInput()">generate input for given output</button>
+    
+    <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
+    <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-compound.js"></script>
+    <script type="text/javascript">
+      var flatObjId = function(x) {
+        var result = {};
+        for(var i in x) {
+          result[i] = x[i];
+        }
+        return result;
+      };
+      
+      var flatObjDouble = function(x) {
+        var result = {}
+        for(var i in x) {
+          result[i] = x[i]*2;
+        }
+        return result;
+      }
+      
+      function generateOutput(){
+        var input = JSON.parse(document.getElementById("input").value);
+        var output = flatObjDouble(input);
+        document.getElementById("output").value = JSON.stringify(output);
+      }
+      //var obj0 = {"raccoons": 1, "super": 2};
+      //var obj1 = {"raccoons": 50, "super": 30};
+      //console.log("SOLVER SAYS:");
+      //console.log(solve2(obj0, flatObjDouble, obj1));
+    </script>
+  </body>
+</html>
 
-  console.log("SOLVER SAYS:");
-  console.log(solve2(obj0, flatObjDouble, obj1));
-</script>
