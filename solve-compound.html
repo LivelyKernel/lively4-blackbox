@@ -31,6 +31,13 @@
         var output = flatObjDouble(input);
         document.getElementById("output").value = JSON.stringify(output);
       }
+      
+      function generateInput() {
+        var input = JSON.parse(document.getElementById("input").value);
+        var output = JSON.parse(document.getElementById("output").value);
+        var targetInput = solve2(input, flatObjDouble, output);
+        document.getElementById("input").value = JSON.stringify(targetInput);
+      }
       //var obj0 = {"raccoons": 1, "super": 2};
       //var obj1 = {"raccoons": 50, "super": 30};
       //console.log("SOLVER SAYS:");
