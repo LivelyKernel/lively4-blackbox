@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <select id="transformationFunction">
+      <option value="id">identity: do not change any value</option>
+      <option value="inc">increment: add one to each value</option>
+      <option value="double">double: multiply each value with two</option>
+    </select><br>
     <textarea id="input" cols="30" rows="10">{"raccoons":1,"super":2}</textarea>
     <textarea id="output" cols="30" rows="10"></textarea>
     <br/>
@@ -10,7 +15,7 @@
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-compound.js"></script>
     <script type="text/javascript">
-      var flatObjId = function(x) {
+      var id = function(x) {
         var result = {};
         for(var i in x) {
           result[i] = x[i];
@@ -18,24 +23,37 @@
         return result;
       };
       
-      var flatObjDouble = function(x) {
+      var inc = function(x) {
+        var result = {};
+        for(var i in x) {
+          result[i] = x[i]+1;
+        }
+        return result;
+      };
+      
+      var double = function(x) {
         var result = {}
         for(var i in x) {
           result[i] = x[i]*2;
         }
         return result;
-      }
+      };
+      
+      var transformation = function(x) {
+        var func = document.getElementById("transformationFunction").value;
+        return window[func](x);
+      };
       
       function generateOutput(){
         var input = JSON.parse(document.getElementById("input").value);
-        var output = flatObjDouble(input);
+        var output = transformation(input);
         document.getElementById("output").value = JSON.stringify(output);
       }
       
       function generateInput() {
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
-        var targetInput = solve2(input, flatObjDouble, output);
+        var targetInput = solve2(input, transformation, output);
         document.getElementById("input").value = JSON.stringify(targetInput);
       }
       //var obj0 = {"raccoons": 1, "super": 2};
