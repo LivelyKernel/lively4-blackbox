@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <select id="transformationFunction">
-      <option value="id">identity: do not change any value</option>
-      <option value="inc">increment: add one to each value</option>
-      <option value="double">double: multiply each value with two</option>
-    </select><br>
-    <textarea id="input" cols="30" rows="10">{"raccoons":1,"super":2}</textarea>
-    <textarea id="output" cols="30" rows="10"></textarea>
-    <br/>
-    <button type="button" onclick="generateOutput()">generate output for given input</button>
-    <button type="button" onclick="generateInput()">generate input for given output</button>
+    <table>
+      <tr>
+        <td>transformation:</td>
+        <td>
+          <select id="transformationFunction">
+            <option value="id">identity: do not change any value</option>
+            <option value="inc">increment: add one to each value</option>
+            <option value="double">double: multiply each value with two</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>input:</td>
+        <td>
+          <textarea id="input" cols="30" rows="10">{"raccoons":1,"cats":2}</textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>output:</td>
+        <td>
+          <textarea id="output" cols="30" rows="10"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button type="button" onclick="generateOutput()">input -> output</button>
+          <button type="button" onclick="generateInput()">output -> input</button>
+        </td>
+      </tr>
+    </table>
     
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-compound.js"></script>
@@ -59,4 +80,3 @@
     </script>
   </body>
 </html>
-
