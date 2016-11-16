@@ -1,3 +1,4 @@
+<script type="text/javascript" src="./genetic-js/js/genetic-0.1.14.js"></script>
 <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
 <script type="text/javascript">
   var inc = function(x) { return x+1 };
@@ -13,6 +14,15 @@
     }
     lively.notify(solveForNumberToNumber(x, window[func], y))
   }
+  
+  var reverse = function(x) {
+    var result = "";
+    for(var i=x.length-1; i>=0; i--) {
+      result += x[i];
+    }
+    return result;
+  };
+  console.log(solveStringToString("hall", reverse, "pleh"));
 </script>
 y = f(x) =
 <select id="solve1func">

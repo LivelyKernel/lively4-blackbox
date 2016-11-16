@@ -31,6 +31,9 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
 }
 
 function solveStringToString(actualInput, transformation, targetOutput) {
+  var result = "";
+  var finished = false;
+  
   var genetic = Genetic.create();
   
   var config = {
@@ -104,13 +107,17 @@ function solveStringToString(actualInput, transformation, targetOutput) {
   };
   
   genetic.notification = function(pop, generation, stats, isFinished) {
-    if(isFinished) {
-      return pop[0].entity;
-    }
-  }
+    console.log(pop[0].entity);
+  };
+  
+  genetic.evolve(config, userData);
 
-  return genetic.evolve(config, userData);
-
+  //while(!finished) {
+    //window.setTimeout(function() {}, 100);
+  //}
+  
+  return result;
+  
   /* Ressources:
    * https://github.com/subprotocol/genetic-js/blob/master/examples/string-solver.html
    * http://subprotocol.com/system/genetic-js.html
