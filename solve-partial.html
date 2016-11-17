@@ -20,12 +20,17 @@
         return result;
       };
       
-      var uppercase = function(x) {
-        return x.toUpperCase();
-      }
-      
-      var lowercase = function(x) {
-        return String.toLowerCase();
+      var removeVowels = function(x) {
+        var result = "";
+        var vowels = ['a', 'e', 'i', 'o', 'u'];
+        for(var i=0; i<x.length; i++) {
+          if(vowels.indexOf(x[i]) > 0) {
+            result += "x";
+          } else {
+            result += x[i];
+          }
+        }
+        return result;
       }
       
       // onclick functions
@@ -40,10 +45,12 @@
       }
       
       function solveString() {
-        x = parseFloat(document.getElementById("solve-partial-string-x").value);
-        y = parseFloat(document.getElementById("solve-partial-string-y").value);
+        x = document.getElementById("solve-partial-string-x").value;
+        y = document.getElementById("solve-partial-string-y").value;
         func = document.getElementById("solve-partial-string-func").value;
-        if(isNaN(x) || isNaN(y)) {
+        // sanity check for now: strings do have the same length
+        // (important for genetic algorithm)
+        if(x.length != y.length) {
           return;
         }
         solveForStringToString(x, window[func], y).then((result) => {
@@ -66,8 +73,7 @@
     y = f(x) =
     <select id="solve-partial-string-func">
       <option value="reverse">reverse</option>
-      <option value="uppercase">uppercase</option>
-      <option value="lowercase">lowercase</option>
+      <option value="removeVowels">remove vowels</option>
     </select><br>
     x = <input type="text" id="solve-partial-string-x"><br>
     y = <input type="text" id="solve-partial-string-y"><br>
