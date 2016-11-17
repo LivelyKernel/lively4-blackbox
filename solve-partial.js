@@ -30,9 +30,12 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   return targetInput;
 }
 
-function solveStringToString(actualInput, transformation, targetOutput) {
-  var result = "";
-  var finished = false;
+async function solveStringToString(actualInput, transformation, targetOutput) {
+  var result = await solveStringToStringAsync(actualInput, transformation, targetOutput);
+  return result;
+}
+
+function solveStringToStringAsync(actualInput, transformation, targetOutput) {
   
   var genetic = Genetic.create();
   
@@ -106,17 +109,17 @@ function solveStringToString(actualInput, transformation, targetOutput) {
 	  return this.userData["transformation"](pop[0].entity) != this.userData["targetOutput"];
   };
   
-  genetic.notification = function(pop, generation, stats, isFinished) {
-    console.log(pop[0].entity);
-  };
+  var prom = new Promise((resolve, reject) => {
+    genetic.notification = function(pop, generation, stats, isFinished) {
+      if(isFinished) {
+        resolve(pop[0].entity);
+      }
+    };
+  });
   
   genetic.evolve(config, userData);
-
-  //while(!finished) {
-    //window.setTimeout(function() {}, 100);
-  //}
   
-  return result;
+  return prom;
   
   /* Ressources:
    * https://github.com/subprotocol/genetic-js/blob/master/examples/string-solver.html
