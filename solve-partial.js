@@ -30,7 +30,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   return targetInput;
 }
 
-function solveStringToString(actualInput, transformation, targetOutput) {
+function solveForStringToString(actualInput, transformation, targetOutput) {
   
   var genetic = Genetic.create();
   
