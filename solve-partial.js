@@ -30,12 +30,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   return targetInput;
 }
 
-async function solveStringToString(actualInput, transformation, targetOutput) {
-  var result = await solveStringToStringAsync(actualInput, transformation, targetOutput);
-  return result;
-}
-
-function solveStringToStringAsync(actualInput, transformation, targetOutput) {
+function solveStringToString(actualInput, transformation, targetOutput) {
   
   var genetic = Genetic.create();
   
