@@ -5,7 +5,6 @@ function solve2(actualInput, transformation, targetOutput) {
   
   var dependencies = findDependencies(actualInput, transformation);
   var targetInput = Object.assign({}, actualInput);
-  
   // 1. find changes output values
   var actualOutput = transformation(actualInput);
   var modifiedOutputKeys = findVaryingKeys(actualOutput, targetOutput);
