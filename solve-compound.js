@@ -42,24 +42,31 @@ function solve2(actualInput, transformation, targetOutput) {
 }
 
 function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
+  
+  // wrap transformation function
+  //function takes an array of values representing the affectingInputKeys
+  //returns the value of the output key we are currently solving for
+  var strippedTransformation = function(inputValues) {
+    var modifiedInput = Object.assign({}, actualInput);
+    var i=0;
+    affectingInputKeys.forEach(function(key){
+      modifiedInput[key] = inputValues[i++];
+    });
+    return transformation(modifiedInput)[modifiedOutputKey];
+  };
+    
   // assumption for now: function is not only surjective but also injective and therefore bijective
   if(affectingInputKeys.length == 1) {
-    
-    // wrap transformation function to appear like a single variable (bijective) transformation
-    var bijectiveTranformation = function(singleVariableInput) {
-      var modifiedInput = Object.assign({}, actualInput);
-      modifiedInput[affectingInputKeys[0]] = singleVariableInput;
-      return transformation(modifiedInput)[modifiedOutputKey];
-    };
     
     // case 0: number -> number
     if(typeof(actualInput[affectingInputKeys[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
       var resultKey = affectingInputKeys[0];
-      var resultValue = solveForNumberToNumber(actualInput[affectingInputKeys[0]], bijectiveTranformation, targetOutput[modifiedOutputKey]);
+      var resultValue = solveForNumberToNumber(actualInput[affectingInputKeys[0]], strippedTransformation, targetOutput[modifiedOutputKey]);
       var result = {};
       result[resultKey] = resultValue;
       return result;
     }
+    
   }
   
   return {};

@@ -1,7 +1,7 @@
 // assumption: input and output are integers
 
 function solveForNumberToNumber(actualInput, transformation, targetOutput) {
-  actualOutput = transformation(actualInput);
+  actualOutput = transformation([actualInput]);
   if(actualOutput == targetOutput) {
     return actualInput;
   }
@@ -13,7 +13,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   var counter = 0;
   while(difference >= 0.001 && counter < 1000) {
     
-    var newDifference = Math.abs(transformation(targetInput+(stepWidth*direction)) - targetOutput);
+    var newDifference = Math.abs(transformation([targetInput+(stepWidth*direction)]) - targetOutput);
     
     // if we head in the wrong direction
     if(newDifference > difference) { 
@@ -24,7 +24,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
       }
     }
     targetInput = targetInput + direction*stepWidth;
-    difference = Math.abs(transformation(targetInput) - targetOutput);
+    difference = Math.abs(transformation([targetInput]) - targetOutput);
     counter = counter+1;
   }
   return targetInput;
