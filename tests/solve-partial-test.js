@@ -1,15 +1,13 @@
-import {expect} from 'node_modules/chai/chai.js'
+import {expect} from '../node_modules/chai/chai.js'
+import {..} from '../solve-partial.js'
 
-// var expect = chai.expect;
+describe("Numbers 1 to 1 relationship", function() {
+  it("negation", function() {
+    var negate = function(x) { return -x; };
+    expect(solveForNumberToNumber(1, negate, 5)).to.equal(-5);
+  });
 
-describe("Blub", function() {
-  describe("test", function() {
-    it("passing", function() {
-      expect("cow.name").to.equal("cow.name");
-    });
-
-    it("failing", function() {
-      expect("cow.name").to.equal("Kate");
-    });
+  it("increment", function() {
+    expect("failing").to.equal("not failing");
   });
 });
