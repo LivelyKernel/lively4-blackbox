@@ -1,5 +1,5 @@
 import {expect} from 'node_modules/chai/chai.js'
-import {solveForNumberToNumber} from '../solve-partial.js'
+import '../solve-partial.js'
 
 describe("Integers", function() {
   describe("1 to 1 relationship", function() {
@@ -79,4 +79,36 @@ describe("Floats", function() {
   describe("n to 1 relationship", function() { /* not yet implemented */ });
 });
 
-describe("String", function() { });
+describe("String", function() {
+  describe("1 to 1 relationship", function() {
+    it("reverse -- input with correct length", function() {
+      var reverse = function(x) {
+        var result = "";
+        for(var i=x.length-1; i>=0; i--) {
+          result += x[i];
+        }
+        return result;
+      };
+      solveForStringToString("fuenf", reverse, "hallo").then(
+        (result) => {
+          expect(result).to.equal("ollah");
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
+      solveForStringToString("catndog", reverse, "raccoon").then(
+        (result) => {
+          expect(result).to.equal("nooccar");
+          done();
+        },
+        (error) => {
+          done(error);
+        }
+      );
+    });
+  });
+  
+  describe("1 to 1 relationship", function() { /* not yet implemented */ });
+});
