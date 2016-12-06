@@ -85,18 +85,20 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   };
   
   genetic.fitness = function(entity) {
-	  var fitness = 0;
-    var entityOutput = this.userData["transformation"](entity);	
-	
-	  for (var i=0;i<entityOutput.length;++i) {
-		  // increase fitness for each character that matches
-		  if (entityOutput[i] == this.userData["targetOutput"][i])
-			  fitness += 1;
-		
-		  // award fractions of a point as we get warmer
-		  fitness += (127-Math.abs(entityOutput.charCodeAt(i) - this.userData["targetOutput"].charCodeAt(i)))/50;
-	  }
-  	return fitness;
+    var opt = this.userData["targetOutput"];
+    var act = this.userData["transformation"](entity);
+    var maxLength = max(opt.length, act.length);
+    var fitness = maxLength * 127;
+    
+    for(var i=0; i< maxLength; ++i){
+      if(opt.length < i || act.length < i){
+        fitness = fitness - 127;
+      } else {
+        fitness = fitness - Math.abs(act.charCodeAt(i) - opt.charCodeAt(i));
+      }
+    }
+    
+    return fitness;
   };
   
   genetic.generation = function(pop, generation, stats) {
