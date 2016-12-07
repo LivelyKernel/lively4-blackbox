@@ -5,7 +5,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   if(actualOutput == targetOutput) {
     return actualInput;
   }
-  
+  debugger;
   var difference = Math.abs(actualOutput - targetOutput);
   var targetInput = actualInput;
   var stepWidth = 1.0;
@@ -14,6 +14,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   while(difference >= 0.001 && counter < 1000) {
     
     var newDifference = Math.abs(transformation([targetInput+(stepWidth*direction)]) - targetOutput);
+    newDifference = parseFloat(newDifference.toFixed(((1/stepWidth) % 10) + 1));
     
     // if we head in the wrong direction
     if(newDifference > difference) { 
@@ -24,7 +25,9 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
       }
     }
     targetInput = targetInput + direction*stepWidth;
+    targetInput = parseFloat(targetInput.toFixed(((1/stepWidth) % 10) + 1));
     difference = Math.abs(transformation([targetInput]) - targetOutput);
+    difference = parseFloat(difference.toFixed(((1/stepWidth) % 10) + 1));
     counter = counter+1;
   }
   return targetInput;

@@ -43,8 +43,8 @@ describe("Floats", function() {
       var negate = function(x) { return -x[0]; };
       expect(solveForNumberToNumber(-1.0, negate, 2.5)).to.equal(-2.5);
       expect(solveForNumberToNumber(1.0, negate, 2.5)).to.equal(-2.5);
-      expect(solveForNumberToNumber(20.0, negate, 5)).to.equal(-2.5);
-      expect(solveForNumberToNumber(20.05, negate, 5)).to.equal(-2.5);
+      expect(solveForNumberToNumber(20.0, negate, 2.5)).to.equal(-2.5);
+      expect(solveForNumberToNumber(20.05, negate, 2.5)).to.equal(-2.5);
       expect(solveForNumberToNumber(1.0, negate,-6.2)).to.equal(6.2);
       expect(solveForNumberToNumber(-1.0, negate, -6.2)).to.equal(6.2);
       expect(solveForNumberToNumber(-20.0, negate,-6.2)).to.equal(6.2);
