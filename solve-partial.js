@@ -14,7 +14,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   while(difference >= 0.001 && counter < 1000) {
     
     var newDifference = Math.abs(transformation([targetInput+(stepWidth*direction)]) - targetOutput);
-    newDifference = parseFloat(newDifference.toFixed(((1/stepWidth) % 10) + 1));
+    newDifference = rectifyFloat(newDifference, stepWidth);
     
     // if we head in the wrong direction
     if(newDifference > difference) { 
@@ -25,9 +25,9 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
       }
     }
     targetInput = targetInput + direction*stepWidth;
-    targetInput = parseFloat(targetInput.toFixed(((1/stepWidth) % 10) + 1));
+    targetInput = rectifyFloat(targetInput, stepWidth);
     difference = Math.abs(transformation([targetInput]) - targetOutput);
-    difference = parseFloat(difference.toFixed(((1/stepWidth) % 10) + 1));
+    difference = rectifyFloat(difference, stepWidth);
     counter = counter+1;
   }
   return targetInput;
@@ -125,4 +125,11 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
    * https://github.com/subprotocol/genetic-js/blob/master/examples/string-solver.html
    * http://subprotocol.com/system/genetic-js.html
    */
+}
+
+
+/* HELPERS */
+
+function rectifyFloat(number, stepWidth) {
+  return parseFloat(number.toFixed(((1/stepWidth) % 10) + 1));
 }
