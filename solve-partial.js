@@ -5,7 +5,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
   if(actualOutput == targetOutput) {
     return actualInput;
   }
-  debugger;
+  
   var difference = Math.abs(actualOutput - targetOutput);
   var targetInput = actualInput;
   var stepWidth = 1.0;
