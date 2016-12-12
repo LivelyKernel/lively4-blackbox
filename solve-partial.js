@@ -40,9 +40,9 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   var config = {
 		"iterations": 4000,
 		"size": 250,
-		"crossover": 0.3,
-		"mutation": 0.3,
-		"skip": 20
+		"crossover": 0,
+		"mutation":1,
+		"skip": 20,
 	};
 
   var userData = {
@@ -64,6 +64,17 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   	function replaceAt(str, index, character) {
 		  return str.substr(0, index) + character + str.substr(index+character.length);
 	  }
+	  
+	  
+	  //lengthening and shortening
+	  var rand = Math.random();
+	  if(rand < 0.1 ){ //shorten
+	    return entity.substr(0, entity.length - 1);
+	  }
+	  if(rand < 0.2){ //lengthen
+	    return entity + 'e';
+	  }
+	  
 	
   	// chromosomal drift
 	  var i = Math.floor(Math.random()*entity.length)		
@@ -71,7 +82,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   };
 
   genetic.crossover = function(mother, father) {
-	  // two-point crossover
+	  /* two-point crossover
 	  var len = mother.length;
 	  var ca = Math.floor(Math.random()*len);
 	  var cb = Math.floor(Math.random()*len);		
@@ -84,25 +95,27 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
 	  var son = father.substr(0,ca) + mother.substr(ca, cb-ca) + father.substr(cb);
   	var daughter = mother.substr(0,ca) + father.substr(ca, cb-ca) + mother.substr(cb);
   	
-	  return [son, daughter];
+  	*/
+	  return [father, mother];
   };
   
   genetic.fitness = function(entity) {
     var opt = this.userData["targetOutput"];
     var act = this.userData["transformation"](entity);
     var maxLength = Math.max(opt.length, act.length);
-    var fitness = maxLength * 127;
+    var fitness = opt.length * 127;
     
-    for(var i=0; i< maxLength; ++i){
+    for(var i=1; i<= maxLength; ++i){
       if(opt.length < i || act.length < i){
         fitness = fitness - 127;
       } else {
-        fitness = fitness - Math.abs(act.charCodeAt(i) - opt.charCodeAt(i));
+        fitness = fitness - Math.abs(act.charCodeAt(i-1) - opt.charCodeAt(i-1));
       }
     }
     
     return fitness;
   };
+  
   
   genetic.generation = function(pop, generation, stats) {
 	  // stop running once we've reached the solution OR after 1000 generations
@@ -113,11 +126,14 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
     genetic.notification = function(pop, generation, stats, isFinished) {
       if(isFinished) {
         resolve(pop[0].entity);
+        console.log(stats);
+        console.log(generation);
       }
     };
   });
   
   genetic.evolve(config, userData);
+
   
   return prom;
   

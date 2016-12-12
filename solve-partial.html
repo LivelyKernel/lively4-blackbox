@@ -24,14 +24,12 @@
         var result = "";
         var vowels = ['a', 'e', 'i', 'o', 'u'];
         for(var i=0; i<x.length; i++) {
-          if(vowels.indexOf(x[i]) > 0) {
-            result += "x";
-          } else {
+          if(vowels.indexOf(x[i]) == -1) {
             result += x[i];
           }
         }
         return result;
-      }
+      };
       
       // onclick functions
       function solveInteger() {
@@ -48,11 +46,7 @@
         x = document.getElementById("solve-partial-string-x").value;
         y = document.getElementById("solve-partial-string-y").value;
         func = document.getElementById("solve-partial-string-func").value;
-        // sanity check for now: strings do have the same length
-        // (important for genetic algorithm)
-        if(x.length != y.length) {
-          return;
-        }
+
         solveForStringToString(x, window[func], y).then((result) => {
           lively.notify(result);
         });
