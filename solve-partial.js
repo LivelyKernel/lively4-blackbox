@@ -101,7 +101,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   
   genetic.fitness = function(entity) {
     var opt = this.userData["targetOutput"];
-    var act = this.userData["transformation"](entity);
+    var act = (this.userData["transformation"](entity)).toString();
     var maxLength = Math.max(opt.length, act.length);
     var fitness = opt.length * 127;
     

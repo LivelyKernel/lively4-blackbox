@@ -31,6 +31,10 @@
         return result;
       };
       
+      var stringLength = function(x) {
+        return x.length;
+      };
+      
       // onclick functions
       function integerInToOut() {
         var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
@@ -86,6 +90,7 @@
     <select id="solve-partial-string-func">
       <option value="reverse">reverse</option>
       <option value="removeVowels">remove vowels</option>
+      <option value="stringLength">string length</option>
     </select><br>
     x = <input type="text" id="solve-partial-string-x"><br>
     y = <input type="text" id="solve-partial-string-y"><br>
