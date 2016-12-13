@@ -32,23 +32,40 @@
       };
       
       // onclick functions
-      function solveInteger() {
+      function integerInToOut() {
+        var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
+        var func = document.getElementById("solve-partial-integer-func").value;
+        if(isNaN(x)) {
+          return;
+        }
+        
+        document.getElementById("solve-partial-integer-y").value = window[func]([x]);;
+      }
+      
+      function integerOutToIn() {
         x = parseFloat(document.getElementById("solve-partial-integer-x").value);
         y = parseFloat(document.getElementById("solve-partial-integer-y").value);
         func = document.getElementById("solve-partial-integer-func").value;
         if(isNaN(x) || isNaN(y)) {
-          return;
+          x = 0;
         }
-        lively.notify(solveForNumberToNumber(x, window[func], y))
+        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber(x, window[func], y)
       }
       
-      function solveString() {
+      function stringInToOut() {
+        x = document.getElementById("solve-partial-string-x").value;
+        func = document.getElementById("solve-partial-string-func").value;
+        
+        document.getElementById("solve-partial-string-y").value = window[func](x);
+      }
+      
+      function stringOutToIn() {
         x = document.getElementById("solve-partial-string-x").value;
         y = document.getElementById("solve-partial-string-y").value;
         func = document.getElementById("solve-partial-string-func").value;
 
         solveForStringToString(x, window[func], y).then((result) => {
-          lively.notify(result);
+          document.getElementById("solve-partial-string-x").value = result;
         });
       }
     </script>
@@ -62,7 +79,8 @@
     </select><br>
     x = <input type="text" id="solve-partial-integer-x"><br>
     y = <input type="text" id="solve-partial-integer-y"><br>
-    <button type="button" onclick="solveInteger()">solve for x</button>
+    <button type="button" onclick="integerInToOut()">input -> output</button>
+    <button type="button" onclick="integerOutToIn()">output -> input</button>
     <h3>Strings</h3>
     y = f(x) =
     <select id="solve-partial-string-func">
@@ -71,6 +89,7 @@
     </select><br>
     x = <input type="text" id="solve-partial-string-x"><br>
     y = <input type="text" id="solve-partial-string-y"><br>
-    <button type="button" onclick="solveString()">solve for x</button>
+    <button type="button" onclick="stringInToOut()">input -> output</button>
+    <button type="button" onclick="stringOutToIn()">output -> input</button>
   </body>
 </html>
