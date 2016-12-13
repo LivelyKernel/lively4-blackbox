@@ -149,3 +149,21 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
 function rectifyFloat(number, stepWidth) {
   return parseFloat(number.toFixed(((1/stepWidth) % 10) + 1));
 }
+
+
+
+//test for some numeric stuff
+function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
+  
+  var functionToMinimize = function(inputConfiguration){
+    return Math.abs(transformation(inputConfiguration) - targetOutput);
+  };
+  
+  
+  var solution = numeric.uncmin(functionToMinimize,actualInputArray).solution;
+  console.log(solution);
+  return solution;
+
+
+
+}

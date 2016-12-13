@@ -2,6 +2,7 @@
 <html>
   <body>
     <script type="text/javascript" src="./genetic-js/js/genetic-0.1.14.js"></script>
+    <script type="text/javascript" src="./numeric-1.2.6.min.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
     <script type="text/javascript">
       
@@ -35,6 +36,12 @@
         return x.length;
       };
       
+      var complex = function(array) {
+        return array[0] + (2* array[1]) - array[2];
+      };
+      
+      
+      
       // onclick functions
       function integerInToOut() {
         var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
@@ -53,7 +60,7 @@
         if(isNaN(x) || isNaN(y)) {
           x = 0;
         }
-        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber(x, window[func], y)
+        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber(x, window[func], y);
       }
       
       function stringInToOut() {
@@ -72,6 +79,32 @@
           document.getElementById("solve-partial-string-x").value = result;
         });
       }
+      
+      function manyIntegerInToOut() {
+        var json = "[" + document.getElementById("solve-many-integer-x").value + "]";
+        var x = JSON.parse(json);
+        var func = document.getElementById("solve-many-integer-func").value;
+        console.log(x);
+        console.log(func);
+        console.log(window[func]);
+        document.getElementById("solve-many-integer-y").value = window[func](x);;
+      }
+      
+      function manyIntegerOutToIn() {
+        var json = "[" + document.getElementById("solve-many-integer-x").value + "]";
+        var x = JSON.parse(json);
+        var y = parseFloat(document.getElementById("solve-many-integer-y").value);
+        func = document.getElementById("solve-many-integer-func").value;
+        if(isNaN(y)) {
+          x = 0;
+        }
+        console.log(x);
+        console.log(y);
+        console.log(func);
+        console.log(window[func]);
+        document.getElementById("solve-many-integer-x").value = solveForManyNumbers(x,window[func],y);
+      }
+      
     </script>
     <h3>Integers</h3>
     y = f(x) =
@@ -96,5 +129,15 @@
     y = <input type="text" id="solve-partial-string-y"><br>
     <button type="button" onclick="stringInToOut()">input -> output</button>
     <button type="button" onclick="stringOutToIn()">output -> input</button>
+    
+    <h3>Many Integers</h3>
+    y = f(x1,x2,x3) =
+    <select id="solve-many-integer-func">
+      <option value="complex">x1+2*x2-x3</option>
+    </select><br>
+    x = <input type="text" id="solve-many-integer-x"><br>
+    y = <input type="text" id="solve-many-integer-y"><br>
+    <button type="button" onclick="manyIntegerInToOut()">input -> output</button>
+    <button type="button" onclick="manyIntegerOutToIn()">output -> input</button>
   </body>
 </html>
