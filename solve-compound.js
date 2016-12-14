@@ -54,21 +54,37 @@ function solveForSingleOutput(actualInput, transformation, targetOutput, affecti
     return transformation(modifiedInput)[modifiedOutputKey];
   };
     
+  //create an array containing just the values of the affectingInputKeys ie. the seed to start solving from
+  var strippedInputArray = [];
+  var i=0;
+  affectingInputKeys.forEach(function(key){
+    strippedInputArray[i] = actualInput[key];
+  });
+  
+  //object to store all the solved input key-value pairs in
+  var result = {};
+  
   // assumption for now: function is not only surjective but also injective and therefore bijective
   if(affectingInputKeys.length == 1) {
     
     // case 0: number -> number
     if(typeof(actualInput[affectingInputKeys[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
-      var resultKey = affectingInputKeys[0];
-      var resultValue = solveForNumberToNumber(actualInput[affectingInputKeys[0]], strippedTransformation, targetOutput[modifiedOutputKey]);
-      var result = {};
-      result[resultKey] = resultValue;
-      return result;
+      //just call int int solver and assign the result to the right key
+      result[affectingInputKeys[0]] = solveForNumberToNumber(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey])[0];
     }
     
+    // case 1: string -> string or string -> number
+    if(typeof(actualInput[affectingInputKeys[0]]) == "string" && 
+      (typeof(targetOutput[modifiedOutputKey]) == "string" || 
+       typeof(targetOutput[modifiedOutputKey]) == "number" )) {
+      
+      var resultValue = solveForStringToString(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+      result[affectingInputKeys[0]] = resultValue;
+    }
+
   }
   
-  return {};
+  return result;
 }
 
 function findDependencies(actualInput, transformation) {

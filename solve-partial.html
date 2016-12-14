@@ -54,28 +54,28 @@
       }
       
       function integerOutToIn() {
-        x = parseFloat(document.getElementById("solve-partial-integer-x").value);
-        y = parseFloat(document.getElementById("solve-partial-integer-y").value);
-        func = document.getElementById("solve-partial-integer-func").value;
+        var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
+        var y = parseFloat(document.getElementById("solve-partial-integer-y").value);
+        var func = document.getElementById("solve-partial-integer-func").value;
         if(isNaN(x) || isNaN(y)) {
           x = 0;
         }
-        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber(x, window[func], y);
+        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber([x], window[func], y);
       }
       
       function stringInToOut() {
-        x = document.getElementById("solve-partial-string-x").value;
-        func = document.getElementById("solve-partial-string-func").value;
+        var x = document.getElementById("solve-partial-string-x").value;
+        var func = document.getElementById("solve-partial-string-func").value;
         
         document.getElementById("solve-partial-string-y").value = window[func](x);
       }
       
       function stringOutToIn() {
-        x = document.getElementById("solve-partial-string-x").value;
-        y = document.getElementById("solve-partial-string-y").value;
-        func = document.getElementById("solve-partial-string-func").value;
+        var x = document.getElementById("solve-partial-string-x").value;
+        var y = document.getElementById("solve-partial-string-y").value;
+        var func = document.getElementById("solve-partial-string-func").value;
 
-        solveForStringToString(x, window[func], y).then((result) => {
+        solveForStringToString([x], window[func], y).then((result) => {
           document.getElementById("solve-partial-string-x").value = result;
         });
       }

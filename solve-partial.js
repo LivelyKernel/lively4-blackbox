@@ -1,13 +1,13 @@
 // assumption: input and output are integers
 
 function solveForNumberToNumber(actualInput, transformation, targetOutput) {
-  actualOutput = transformation([actualInput]);
+  var actualOutput = transformation(actualInput);
   if(actualOutput == targetOutput) {
     return actualInput;
   }
   
   var difference = Math.abs(actualOutput - targetOutput);
-  var targetInput = actualInput;
+  var targetInput = actualInput[0]; //extract the only element of the input array
   var stepWidth = 1.0;
   var direction = +1; // D = {-1, +1}
   var counter = 0;
@@ -30,7 +30,7 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
     difference = rectifyFloat(difference, stepWidth);
     counter = counter+1;
   }
-  return targetInput;
+  return [targetInput];
 }
 
 function solveForStringToString(actualInput, transformation, targetOutput) {
@@ -46,7 +46,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
 	};
 
   var userData = {
-    "actualInput": actualInput,
+    "actualInput": actualInput[0],
     "transformation": transformation,
     "targetOutput": targetOutput
   };
