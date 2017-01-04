@@ -5,6 +5,16 @@
       <tr>
         <td>transformation:</td>
         <td>
+          <juicy-ace-editor id="transformationString" mode="ace/mode/javascript">function transformation(object){
+  object["raccoons"] = 3 * object["raccoons"]; 
+  object["cats"] = 3 * object["cats"]; 
+  return object;
+}</juicy-ace-editor>
+        </td>
+      </tr>
+      <tr>
+        <td>transformation:</td>
+        <td>
           <select id="transformationFunction">
             <option value="id">identity: do not change any value</option>
             <option value="inc">increment: add one to each value</option>
@@ -60,21 +70,23 @@
         return result;
       };
       
-      var transformation = function(x) {
+      /*var transformation = function(x) {
         var func = document.getElementById("transformationFunction").value;
         return window[func](x);
-      };
+      };*/
       
       function generateOutput(){
         var input = JSON.parse(document.getElementById("input").value);
-        var output = transformation(input);
+        var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
+        var output = func(input);
         document.getElementById("output").value = JSON.stringify(output);
       }
       
       function generateInput() {
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
-        var targetInput = solve2(input, transformation, output);
+        var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
+        var targetInput = solve2(input, func, output);
         document.getElementById("input").value = JSON.stringify(targetInput);
       }
     </script>

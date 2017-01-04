@@ -90,7 +90,7 @@ function solveForSingleOutput(actualInput, transformation, targetOutput, affecti
 function findDependencies(actualInput, transformation) {
   // finding dependencies
   var dependencies = {};
-  var actualOutput = transformation(actualInput);
+  var actualOutput = transformation(Object.assign({}, actualInput));
   for(var i in actualInput) {
     // modifying single variable
     var influenced = new Set();
@@ -112,7 +112,7 @@ function findDependencies(actualInput, transformation) {
     
     tries.forEach(function(j) {
       diffInput[i] = j;
-      var diffOutput = transformation(diffInput);
+      var diffOutput = transformation(Object.assign({}, diffInput));
   
       findVaryingKeys(actualOutput, diffOutput).forEach(function(element) {
         influenced.add(element);
