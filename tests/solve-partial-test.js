@@ -9,9 +9,16 @@ describe("Integers", function() {
       var inputs = [-1, 1,20, 1,-1];
       var target = [ 5, 5, 5,-6,-6];
       for(i=0;i<inputs.length;++i){
-        var solution = solveForNumberToNumber([inputs[i]], transf, target[i]);
-        var variance = Math.abs(transf(solution) - target[i]);
-        expect(variance).to.be.at.most(0);
+        //var solution = solveForNumberToNumber([inputs[i]], transf, target[i]);
+        //var variance = Math.abs(transf(solution) - target[i]);
+        //expect(variance).to.be.at.most(0);
+        solveForNumberToNumber([inputs[i]], transf, target[i]).then((solution) => {
+          transf(solution).should.equal(target[i]);
+          done();
+        },
+        (err) => {
+          done(err);
+        });
       }
     });
   

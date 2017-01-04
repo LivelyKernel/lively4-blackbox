@@ -30,7 +30,9 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
     difference = rectifyFloat(difference, stepWidth);
     counter = counter+1;
   }
-  return [targetInput];
+  return new Promise((resolve, reject) => {
+    resolve([targetInput]);
+  });
 }
 
 function solveForStringToString(actualInput, transformation, targetOutput) {

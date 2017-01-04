@@ -60,7 +60,9 @@
         if(isNaN(x) || isNaN(y)) {
           x = 0;
         }
-        document.getElementById("solve-partial-integer-x").value = solveForNumberToNumber([x], window[func], y);
+        solveForNumberToNumber([x], window[func], y).then((result) => {
+          document.getElementById("solve-partial-integer-x").value = result;
+        });
       }
       
       function stringInToOut() {
