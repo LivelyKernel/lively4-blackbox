@@ -43,6 +43,7 @@
       </tr>
     </table>
     
+    <script type="text/javascript" src="./genetic-js/js/genetic-0.1.14.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-compound.js"></script>
     <script type="text/javascript">
@@ -86,8 +87,11 @@
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
         var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
-        var targetInput = solve2(input, func, output);
-        document.getElementById("input").value = JSON.stringify(targetInput);
+        solve2(input, func, output).then((targetInput) => {
+          console.log("solve2 returned");
+          document.getElementById("input").value = JSON.stringify(targetInput);
+          
+        });
       }
     </script>
   </body>

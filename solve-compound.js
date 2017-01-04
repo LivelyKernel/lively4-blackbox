@@ -1,15 +1,15 @@
 // assumption: input and output are flat dictionaries
 
 
-function solve2(actualInput, transformation, targetOutput) { 
+async function solve2(actualInput, transformation, targetOutput) { 
   
   var dependencies = findDependencies(actualInput, transformation);
   var targetInput = Object.assign({}, actualInput);
   // 1. find changes output values
   var actualOutput = transformation(actualInput);
-  var modifiedOutputKeys = findVaryingKeys(actualOutput, targetOutput);
+  var modifiedOutputKeys = Array.from(findVaryingKeys(actualOutput, targetOutput));
   
-  modifiedOutputKeys.forEach(function(modifiedOutputKey){
+  for(let modifiedOutputKey of modifiedOutputKeys){
     // 2. find corresponding input values;
     //    or: output is independent -> no solution
     var affectingInputKeys = new Set();
@@ -31,17 +31,18 @@ function solve2(actualInput, transformation, targetOutput) {
     
     // 3. solving: for each modified output variable, find solution by modifying affecting input keys
     affectingInputKeys = Array.from(affectingInputKeys);
-    var solutions = solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
+    var solutions = await solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
+    console.log("solveForSingleOutput returned");
     for (var solvedInputKey in solutions) {
       targetInput[solvedInputKey] = solutions[solvedInputKey];
     }
-  });
+  }
   
   return targetInput;
 }
 
-function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
-  
+async function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
+  debugger;
   // wrap transformation function
   //function takes an array of values representing the affectingInputKeys
   //returns the value of the output key we are currently solving for
@@ -69,8 +70,10 @@ function solveForSingleOutput(actualInput, transformation, targetOutput, affecti
     
     // case 0: number -> number
     if(typeof(actualInput[affectingInputKeys[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
+      console.log("int int case entered");
       //just call int int solver and assign the result to the right key
-      result[affectingInputKeys[0]] = solveForNumberToNumber(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey])[0];
+      result[affectingInputKeys[0]] = (await solveForNumberToNumber(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]))[0];
+      console.log("solveForNumberToNumber returned");
     }
     
     // case 1: string -> string or string -> number
@@ -78,7 +81,7 @@ function solveForSingleOutput(actualInput, transformation, targetOutput, affecti
       (typeof(targetOutput[modifiedOutputKey]) == "string" || 
        typeof(targetOutput[modifiedOutputKey]) == "number" )) {
       
-      var resultValue = solveForStringToString(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+      var resultValue = await solveForStringToString(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
       result[affectingInputKeys[0]] = resultValue;
     }
 
