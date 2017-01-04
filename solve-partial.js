@@ -162,7 +162,10 @@ function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
   
   var solution = numeric.uncmin(functionToMinimize,actualInputArray).solution;
   console.log(solution);
-  return solution;
+  // return solution;
+  return new Promise((resolve, reject) => {
+    resolve(solution);
+  });
 
 
 
