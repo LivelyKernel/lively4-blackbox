@@ -6,9 +6,10 @@
         <td>transformation:</td>
         <td>
           <juicy-ace-editor id="transformationString" mode="ace/mode/javascript">function transformation(object){
-  object["raccoons"] = 3 * object["raccoons"]; 
-  object["cats"] = 3 * object["cats"]; 
-  return object;
+  var result = {};
+  result["raccoons"] = object["raccoons"] + "p"; 
+  result["cats"] = 3 * object["cats"]; 
+  return result;
 }</juicy-ace-editor>
         </td>
       </tr>
@@ -25,7 +26,7 @@
       <tr>
         <td>input:</td>
         <td>
-          <textarea id="input" cols="30" rows="10">{"raccoons":1,"cats":2}</textarea>
+          <textarea id="input" cols="30" rows="10">{"raccoons":"hallo","cats":2}</textarea>
         </td>
       </tr>
       <tr>

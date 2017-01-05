@@ -2,7 +2,7 @@
 
 
 async function solve2(actualInput, transformation, targetOutput) { 
-  
+  console.log("solve2 entered");
   var dependencies = findDependencies(actualInput, transformation);
   var targetInput = Object.assign({}, actualInput);
   // 1. find changes output values
@@ -42,6 +42,7 @@ async function solve2(actualInput, transformation, targetOutput) {
 }
 
 async function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
+  console.log("solveForSingleOutput entered");
   debugger;
   // wrap transformation function
   //function takes an array of values representing the affectingInputKeys
