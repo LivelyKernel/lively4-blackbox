@@ -110,7 +110,25 @@
         });
       }
       
+      function stringNumberInToOut() {
+        var x = document.getElementById("solve-string-number-x").value;
+        var func = document.getElementById("solve-string-number-func").value;
+        
+        document.getElementById("solve-string-number-y").value = window[func](x);
+      }
+      
+      function stringNumberOutToIn() {
+        var x = document.getElementById("solve-string-number-x").value;
+        var y = document.getElementById("solve-string-number-y").value;
+        var func = document.getElementById("solve-string-number-func").value;
+
+        solveForStringToNumber([x], window[func], y).then((result) => {
+          document.getElementById("solve-string-number-x").value = result;
+        });
+      }
+      
     </script>
+    
     <h3>Integers</h3>
     y = f(x) =
     <select id="solve-partial-integer-func">
@@ -123,6 +141,7 @@
     y = <input type="text" id="solve-partial-integer-y"><br>
     <button type="button" onclick="integerInToOut()">input -> output</button>
     <button type="button" onclick="integerOutToIn()">output -> input</button>
+    
     <h3>Strings</h3>
     y = f(x) =
     <select id="solve-partial-string-func">
@@ -144,5 +163,15 @@
     y = <input type="text" id="solve-many-integer-y"><br>
     <button type="button" onclick="manyIntegerInToOut()">input -> output</button>
     <button type="button" onclick="manyIntegerOutToIn()">output -> input</button>
+    
+    <h3>String To Number</h3>
+    y = f(x) =
+    <select id="solve-string-number-func">
+      <option value="stringLength">string length</option>
+    </select><br>
+    x = <input type="text" id="solve-string-number-x"><br>
+    y = <input type="text" id="solve-string-number-y"><br>
+    <button type="button" onclick="stringNumberInToOut()">input -> output</button>
+    <button type="button" onclick="stringNumberOutToIn()">output -> input</button>
   </body>
 </html>
