@@ -48,6 +48,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
 		"crossover": 0,
 		"mutation":1,
 		"skip": 20,
+		"webWorkers": false,
 	};
 
   var userData = {
@@ -153,6 +154,7 @@ function solveForStringToNumber(actualInput, transformation, targetOutput) {
 		"crossover": 0,
 		"mutation":1,
 		"skip": 20,
+		"webWorkers": false,
 	};
 
   var userData = {

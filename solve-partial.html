@@ -36,6 +36,10 @@
         return x.length;
       };
       
+      var addP = function(x) {
+        return x + "p";
+      }
+      
       var complex = function(array) {
         return array[0] + (2* array[1]) - array[2];
       };
@@ -148,6 +152,7 @@
       <option value="reverse">reverse</option>
       <option value="removeVowels">remove vowels</option>
       <option value="stringLength">string length</option>
+      <option value="addP">add p</option>
     </select><br>
     x = <input type="text" id="solve-partial-string-x"><br>
     y = <input type="text" id="solve-partial-string-y"><br>

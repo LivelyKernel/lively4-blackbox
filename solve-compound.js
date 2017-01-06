@@ -47,7 +47,11 @@ async function solveForSingleOutput(actualInput, transformation, targetOutput, a
   // wrap transformation function
   //function takes an array of values representing the affectingInputKeys
   //returns the value of the output key we are currently solving for
-  var strippedTransformation = function(inputValues) {
+  /*self.actualInput = actualInput;
+  self.affectingInputKeys = affectingInputKeys;
+  self.transformation = transformation;
+  self.modifiedOutputKey = modifiedOutputKey;*/
+  function strippedTransformation(inputValues) {
     var modifiedInput = Object.assign({}, actualInput);
     var i=0;
     affectingInputKeys.forEach(function(key){

@@ -5,12 +5,18 @@
       <tr>
         <td>transformation:</td>
         <td>
-          <juicy-ace-editor id="transformationString" mode="ace/mode/javascript">function transformation(object){
+          <!--<juicy-ace-editor id="transformationString" mode="ace/mode/javascript">function transformation(object){
   var result = {};
   result["raccoons"] = object["raccoons"] + "p"; 
   result["cats"] = 3 * object["cats"]; 
   return result;
-}</juicy-ace-editor>
+}</juicy-ace-editor>-->
+          <textarea id="transformationString">function transformation(object){
+  var result = {};
+  result["raccoons"] = object["raccoons"] + "p"; 
+  result["cats"] = 3 * object["cats"]; 
+  return result;
+}</textarea>
         </td>
       </tr>
       <tr>
@@ -38,8 +44,8 @@
       <tr>
         <td></td>
         <td>
-          <button type="button" onclick="generateOutput()">input -> output</button>
-          <button type="button" onclick="generateInput()">output -> input</button>
+          <button type="button" id="genOutput">input -> output</button>
+          <button type="button" id="genInput">output -> input</button>
         </td>
       </tr>
     </table>
@@ -48,6 +54,9 @@
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
     <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-compound.js"></script>
     <script type="text/javascript">
+      document.getElementById("genOutput").addEventListener("click", generateOutput);
+      document.getElementById("genInput").addEventListener("click", generateInput);
+    
       var id = function(x) {
         var result = {};
         for(var i in x) {
@@ -84,7 +93,8 @@
         document.getElementById("output").value = JSON.stringify(output);
       }
       
-      function generateInput() {
+      function generateInput(evt) {
+        debugger;
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
         var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
