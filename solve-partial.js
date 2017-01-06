@@ -107,7 +107,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   
   genetic.fitness = function(entity) {
     var opt = this.userData["targetOutput"];
-    var act = (this.userData["transformation"](entity)).toString();
+    var act = (this.userData["transformation"]([entity])).toString();
     var maxLength = Math.max(opt.length, act.length);
     var fitness = opt.length * 127;
     
@@ -125,7 +125,7 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
   
   genetic.generation = function(pop, generation, stats) {
 	  // stop running once we've reached the solution OR after 1000 generations
-	  return this.userData["transformation"](pop[0].entity) != this.userData["targetOutput"];
+	  return this.userData["transformation"]([pop[0].entity]) != this.userData["targetOutput"];
   };
   
   var prom = new Promise((resolve, reject) => {

@@ -87,8 +87,7 @@
         document.getElementById("output").value = JSON.stringify(output);
       }
       
-      function generateInput(evt) {
-        debugger;
+      function generateInput() {
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
         var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
