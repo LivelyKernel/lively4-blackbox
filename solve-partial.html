@@ -13,33 +13,37 @@
       var watman = function(x) { return 10*(0.1*x[0])^2-(0.1*x[0])^4+2 };
       
       // string manipulation functions
-      var reverse = function(x) {
+      var reverse = function(array) {
+        var string = array[0]
         var result = "";
-        for(var i=x.length-1; i>=0; i--) {
-          result += x[i];
+        for(var i=string.length-1; i>=0; i--) {
+          result += string[i];
         }
         return result;
       };
       
-      var removeVowels = function(x) {
+      var removeVowels = function(array) {
+        var string = array[0];
         var result = "";
         var vowels = ['a', 'e', 'i', 'o', 'u'];
-        for(var i=0; i<x.length; i++) {
-          if(vowels.indexOf(x[i]) == -1) {
-            result += x[i];
+        for(var i=0; i<string.length; i++) {
+          if(vowels.indexOf(string[i]) == -1) {
+            result += string[i];
           }
         }
         return result;
       };
       
-      var stringLength = function(x) {
-        return x.length;
-      };
-      
-      var addP = function(x) {
-        return x + "p";
+      var addP = function(array) {
+        return array[0] + "p";
       }
       
+      // string to string and string to number 
+      var stringLength = function(array) {
+        return array[0].length;
+      };
+      
+      // many numbers
       var complex = function(array) {
         return array[0] + (2* array[1]) - array[2];
       };
@@ -73,7 +77,7 @@
         var x = document.getElementById("solve-partial-string-x").value;
         var func = document.getElementById("solve-partial-string-func").value;
         
-        document.getElementById("solve-partial-string-y").value = window[func](x);
+        document.getElementById("solve-partial-string-y").value = window[func]([x]);
       }
       
       function stringOutToIn() {
@@ -118,7 +122,7 @@
         var x = document.getElementById("solve-string-number-x").value;
         var func = document.getElementById("solve-string-number-func").value;
         
-        document.getElementById("solve-string-number-y").value = window[func](x);
+        document.getElementById("solve-string-number-y").value = window[func]([x]);
       }
       
       function stringNumberOutToIn() {
@@ -151,8 +155,8 @@
     <select id="solve-partial-string-func">
       <option value="reverse">reverse</option>
       <option value="removeVowels">remove vowels</option>
-      <option value="stringLength">string length</option>
       <option value="addP">add p</option>
+      <option value="stringLength">string length</option>
     </select><br>
     x = <input type="text" id="solve-partial-string-x"><br>
     y = <input type="text" id="solve-partial-string-y"><br>
