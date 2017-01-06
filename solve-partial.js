@@ -131,8 +131,8 @@ function solveForStringToString(actualInput, transformation, targetOutput) {
     genetic.notification = function(pop, generation, stats, isFinished) {
       if(isFinished) {
         resolve(pop[0].entity);
-        console.log(stats);
-        console.log(generation);
+        //console.log(stats);
+        //console.log(generation);
       }
     };
   });
@@ -228,8 +228,8 @@ function solveForStringToNumber(actualInput, transformation, targetOutput) {
     genetic.notification = function(pop, generation, stats, isFinished) {
       if(isFinished) {
         resolve(pop[0].entity);
-        console.log(stats);
-        console.log(generation);
+        //console.log(stats);
+        //console.log(generation);
       }
     };
   });
@@ -251,7 +251,7 @@ function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
   
   
   var solution = numeric.uncmin(functionToMinimize,actualInputArray).solution;
-  console.log(solution);
+  //console.log(solution);
   // return solution;
   return new Promise((resolve, reject) => {
     resolve(solution);
