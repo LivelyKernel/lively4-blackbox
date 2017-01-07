@@ -114,6 +114,7 @@
         console.log(window[func]);
         //document.getElementById("solve-many-integer-x").value = solveForManyNumbers(x,window[func],y);
         solveForManyNumbers(x, window[func], y).then((result) => {
+          console.log(result);
           document.getElementById("solve-many-integer-x").value = result;
         });
       }

@@ -18,14 +18,6 @@ async function solve2(actualInput, transformation, targetOutput) {
       var dependantOutputKeys = dependencies[inputKey];
       if(dependantOutputKeys.includes(modifiedOutputKey)) {
         affectingInputKeys.add(inputKey);
-        
-        if(dependantOutputKeys.length > 1) {
-          throw "Error: Function is not surjective.";
-        }
-        
-        if(dependantOutputKeys.length === 0) {
-          throw "Error: Modified output variable seems to be independent from input variables.";
-        }
       }
     }
     
@@ -47,49 +39,79 @@ async function solveForSingleOutput(actualInput, transformation, targetOutput, a
   // wrap transformation function
   //function takes an array of values representing the affectingInputKeys
   //returns the value of the output key we are currently solving for
-  /*self.actualInput = actualInput;
-  self.affectingInputKeys = affectingInputKeys;
-  self.transformation = transformation;
-  self.modifiedOutputKey = modifiedOutputKey;*/
+  window.actualInput = actualInput;
+  window.affectingInputKeys = affectingInputKeys;
+  window.transformation = transformation;
+  window.modifiedOutputKey = modifiedOutputKey;
   function strippedTransformation(inputValues) {
-    var modifiedInput = Object.assign({}, actualInput);
+    var modifiedInput = Object.assign({}, window.actualInput);
     var i=0;
-    affectingInputKeys.forEach(function(key){
+    window.affectingInputKeys.forEach(function(key){
       modifiedInput[key] = inputValues[i++];
     });
-    return transformation(modifiedInput)[modifiedOutputKey];
+    return window.transformation(modifiedInput)[window.modifiedOutputKey];
   };
     
   //create an array containing just the values of the affectingInputKeys ie. the seed to start solving from
   var strippedInputArray = [];
   var i=0;
-  affectingInputKeys.forEach(function(key){
-    strippedInputArray[i] = actualInput[key];
-  });
+  for(let i=0; i<affectingInputKeys.length; ++i) {
+    strippedInputArray[i] = actualInput[affectingInputKeys[i]];
+  }
   
   //object to store all the solved input key-value pairs in
   var result = {};
   
-  // assumption for now: function is not only surjective but also injective and therefore bijective
+  // case 0: output keys with no dependency (trivial case, potentially unsolvable)
+  if(affectingInputKeys.length == 0) {
+    // do nothing
+  }
+  
+  // case 1: output keys with only one dependency (easy case)
   if(affectingInputKeys.length == 1) {
     
-    // case 0: number -> number
-    if(typeof(actualInput[affectingInputKeys[0]]) == "number" && typeof(targetOutput[modifiedOutputKey]) == "number") {
+    // case 1.0: number -> number
+    if(typeof(actualInput[affectingInputKeys[0]]) == "number" &&
+       typeof(targetOutput[modifiedOutputKey]) == "number") {
       console.log("int int case entered");
       //just call int int solver and assign the result to the right key
       result[affectingInputKeys[0]] = (await solveForNumberToNumber(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]))[0];
       console.log("solveForNumberToNumber returned");
     }
     
-    // case 1: string -> string or string -> number
+    // case 1.1: string -> string
     if(typeof(actualInput[affectingInputKeys[0]]) == "string" && 
-      (typeof(targetOutput[modifiedOutputKey]) == "string" || 
-       typeof(targetOutput[modifiedOutputKey]) == "number" )) {
+       typeof(targetOutput[modifiedOutputKey]) == "string") {
       
       var resultValue = await solveForStringToString(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
       result[affectingInputKeys[0]] = resultValue;
     }
-
+    
+    // case 1.2: string -> number
+    if(typeof(actualInput[affectingInputKeys[0]]) == "string" && 
+       typeof(targetOutput[modifiedOutputKey]) == "number" ) {
+      
+      var resultValue = await solveForStringToNumber(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+      result[affectingInputKeys[0]] = resultValue;
+    }
+  }
+    
+  // case 2: output keys with more than one dependency (hard case)
+  if(affectingInputKeys.length > 1) {
+    // case 2.0: numbers -> number
+    var allAffectingInputKeysAreNumbers = true;
+    for(let affectingInputKey of affectingInputKeys) {
+      if(typeof(actualInput[affectingInputKey]) != "number") {
+        allAffectingInputKeysAreNumbers = false;
+      }
+    }
+    if(allAffectingInputKeysAreNumbers && typeof(targetOutput[modifiedOutputKey]) == "number") {
+      var resultValues = await solveForManyNumbers(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+      for(let i=0; i<affectingInputKeys.length; ++i) {
+        result[affectingInputKeys[i]] = resultValues[i];
+      }
+    }
+    
   }
   
   return result;
