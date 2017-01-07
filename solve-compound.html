@@ -15,25 +15,15 @@
         </td>
       </tr>
       <tr>
-        <td>transformation:</td>
-        <td>
-          <select id="transformationFunction">
-            <option value="id">identity: do not change any value</option>
-            <option value="inc">increment: add one to each value</option>
-            <option value="double">double: multiply each value with two</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
         <td>input:</td>
         <td>
-          <textarea id="input" cols="30" rows="10">{"raccoons":"hallo","cats":2}</textarea>
+          <textarea id="input" cols="50" rows="5">{"raccoons":"hallo","cats":2}</textarea>
         </td>
       </tr>
       <tr>
         <td>output:</td>
         <td>
-          <textarea id="output" cols="30" rows="10"></textarea>
+          <textarea id="output" cols="50" rows="5"></textarea>
         </td>
       </tr>
       <tr>
@@ -51,35 +41,6 @@
     <script type="text/javascript">
       document.getElementById("genOutput").addEventListener("click", generateOutput);
       document.getElementById("genInput").addEventListener("click", generateInput);
-    
-      var id = function(x) {
-        var result = {};
-        for(var i in x) {
-          result[i] = x[i];
-        }
-        return result;
-      };
-      
-      var inc = function(x) {
-        var result = {};
-        for(var i in x) {
-          result[i] = x[i]+1;
-        }
-        return result;
-      };
-      
-      var double = function(x) {
-        var result = {}
-        for(var i in x) {
-          result[i] = x[i]*2;
-        }
-        return result;
-      };
-      
-      /*var transformation = function(x) {
-        var func = document.getElementById("transformationFunction").value;
-        return window[func](x);
-      };*/
       
       function generateOutput(){
         var input = JSON.parse(document.getElementById("input").value);
