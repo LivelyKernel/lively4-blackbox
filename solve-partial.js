@@ -261,6 +261,114 @@ function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
   
 }
 
+
+function solveForManyStrings(actualInput, transformation, targetOutput) {
+  var genetic = Genetic.create();
+  
+  var config = {
+		"iterations": 4000,
+		"size": 250,
+		"crossover": 0,
+		"mutation":1,
+		"skip": 20,
+		"webWorkers": false,
+	};
+
+  var userData = {
+    "actualInput": actualInput,
+    "transformation": transformation,
+    "targetOutput": targetOutput
+  };
+  
+  genetic.optimize = Genetic.Optimize.Maximize;
+  genetic.select1 = Genetic.Select1.Tournament2;
+  genetic.select2 = Genetic.Select2.Tournament2;
+
+  genetic.seed = function() {
+    // evolution starts off with given input
+    return this.userData["actualInput"];
+  };
+  
+  genetic.mutate = function(entity) {
+  	function replaceAt(str, index, character) {
+		  return str.substr(0, index) + character + str.substr(index+character.length);
+	  }
+	  
+	  // randomly choose string to mutate
+	  var idx = Math.floor(Math.random() * entity.length);
+	  
+	  // lengthening, shortening, or character replacement
+	  var rand = Math.random();
+	  if(rand < 0.1 ){
+	    //shorten
+	    entity[idx] = entity[idx].substr(0, entity[idx].length - 1);
+	  } else if(rand < 0.2){
+	    //lengthen
+	    entity[idx] += 'e';
+	  } else {
+	    // chromosomal drift
+	    var i = Math.floor(Math.random()*entity[idx].length);
+	    entity[idx] = replaceAt(entity[idx], i, String.fromCharCode(entity[idx].charCodeAt(i) + (Math.floor(Math.random()*2) ? 1 : -1)));
+	  }
+  	
+	  return entity;
+  };
+
+  genetic.crossover = function(mother, father) {
+	  /* two-point crossover
+	  var len = mother.length;
+	  var ca = Math.floor(Math.random()*len);
+	  var cb = Math.floor(Math.random()*len);		
+	  if (ca > cb) {
+	  	var tmp = cb;
+	  	cb = ca;
+	  	ca = tmp;
+	  }
+	  	
+	  var son = father.substr(0,ca) + mother.substr(ca, cb-ca) + father.substr(cb);
+  	var daughter = mother.substr(0,ca) + father.substr(ca, cb-ca) + mother.substr(cb);
+  	
+  	*/
+	  return [father, mother];
+  };
+  
+  genetic.fitness = function(entity) {
+    var opt = this.userData["targetOutput"];
+    var act = (this.userData["transformation"](entity)).toString();
+    var maxLength = Math.max(opt.length, act.length);
+    var fitness = opt.length * 127;
+    
+    for(var i=1; i<= maxLength; ++i){
+      if(opt.length < i || act.length < i){
+        fitness = fitness - 127;
+      } else {
+        fitness = fitness - Math.abs(act.charCodeAt(i-1) - opt.charCodeAt(i-1));
+      }
+    }
+    
+    return fitness;
+  };
+
+  genetic.generation = function(pop, generation, stats) {
+	  // stop running once we've reached the solution OR after 1000 generations
+	  return this.userData["transformation"](pop[0].entity) != this.userData["targetOutput"];
+  };
+  
+  var prom = new Promise((resolve, reject) => {
+    genetic.notification = function(pop, generation, stats, isFinished) {
+      if(isFinished) {
+        resolve(pop[0].entity);
+        //console.log(stats);
+        //console.log(generation);
+      }
+    };
+  });
+  
+  genetic.evolve(config, userData);
+
+  return prom;
+
+}
 /* HELPERS */
 
 function rectifyFloat(number, stepWidth) {

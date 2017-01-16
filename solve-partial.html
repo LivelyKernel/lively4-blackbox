@@ -48,7 +48,10 @@
         return array[0] + (2* array[1]) - array[2];
       };
       
-      
+      // many strings
+      var concat2 = function(array) {
+        return array[0] + array[1];
+      }
       
       // onclick functions
       function integerInToOut() {
@@ -114,7 +117,6 @@
         console.log(window[func]);
         //document.getElementById("solve-many-integer-x").value = solveForManyNumbers(x,window[func],y);
         solveForManyNumbers(x, window[func], y).then((result) => {
-          console.log(result);
           document.getElementById("solve-many-integer-x").value = result;
         });
       }
@@ -133,6 +135,30 @@
 
         solveForStringToNumber([x], window[func], y).then((result) => {
           document.getElementById("solve-string-number-x").value = result;
+        });
+      }
+      
+      function manyStringsInToOut() {
+        var x = [
+          document.getElementById("solve-many-strings-x0").value,
+          document.getElementById("solve-many-strings-x1").value
+        ];
+        var func = document.getElementById("solve-many-strings-func").value;
+        
+        document.getElementById("solve-many-strings-y").value = window[func](x);
+      }
+      
+      function manyStringsOutToIn() {
+        var x = [
+          document.getElementById("solve-many-strings-x0").value,
+          document.getElementById("solve-many-strings-x1").value
+        ];
+        var y = document.getElementById("solve-many-strings-y").value
+        var func = document.getElementById("solve-many-strings-func").value;
+        
+        solveForManyStrings(x, window[func], y).then((result) => {
+          document.getElementById("solve-many-strings-x0").value = result[0];
+          document.getElementById("solve-many-strings-x1").value = result[1];
         });
       }
       
@@ -183,5 +209,16 @@
     y = <input type="text" id="solve-string-number-y"><br>
     <button type="button" onclick="stringNumberInToOut()">input -> output</button>
     <button type="button" onclick="stringNumberOutToIn()">output -> input</button>
+    
+    <h3>Many Strings</h3>
+    y = f(x) =
+    <select id="solve-many-strings-func">
+      <option value="concat2">concat x0 and x1</option>
+    </select><br>
+    x0 = <input type="text" id="solve-many-strings-x0"><br>
+    x1 = <input type="text" id="solve-many-strings-x1"><br>
+    y = <input type="text" id="solve-many-strings-y"><br>
+    <button type="button" onclick="manyStringsInToOut()">input -> output</button>
+    <button type="button" onclick="manyStringsOutToIn()">output -> input</button>
   </body>
 </html>
