@@ -452,7 +452,7 @@ function solveForAny(actualInput, transformation, targetOutput) {
     if(typeof(this.userData["targetOutput"]) === "number") {
       var opt = this.userData["targetOutput"];
       var act = (this.userData["transformation"]([entity]));
-      return Math.abs(opt - act);
+      return -(Math.abs(opt - act));
     }
     
     if(typeof(this.userData["targetOutput"]) === "string") {
