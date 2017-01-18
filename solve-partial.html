@@ -162,6 +162,29 @@
         });
       }
       
+      function anyInToOut() {
+        var x = [
+          parseInt(document.getElementById("solve-any-x0").value),
+          parseInt(document.getElementById("solve-any-x1").value)
+        ];
+        var func = document.getElementById("solve-any-func").value;
+        
+        document.getElementById("solve-any-y").value = window[func](x);
+      }
+      
+      function anyOutToIn() {
+        var x = [
+          parseInt(document.getElementById("solve-any-x0").value),
+          parseInt(document.getElementById("solve-any-x1").value)
+        ];
+        var y = parseInt(document.getElementById("solve-any-y").value)
+        var func = document.getElementById("solve-any-func").value;
+        
+        solveForAny(x, window[func], y).then((result) => {
+          document.getElementById("solve-any-x0").value = result[0].toString();
+          document.getElementById("solve-any-x1").value = result[1].toString();
+        });
+      }
     </script>
     
     <h3>Integers</h3>
@@ -220,5 +243,16 @@
     y = <input type="text" id="solve-many-strings-y"><br>
     <button type="button" onclick="manyStringsInToOut()">input -> output</button>
     <button type="button" onclick="manyStringsOutToIn()">output -> input</button>
+    
+    <h3>Any</h3>
+    y = f(x) =
+    <select id="solve-any-func">
+      <option value="concat2">x0 + x1</option>
+    </select><br>
+    x0 = <input type="text" id="solve-any-x0"><br>
+    x1 = <input type="text" id="solve-any-x1"><br>
+    y = <input type="text" id="solve-any-y"><br>
+    <button type="button" onclick="anyInToOut()">input -> output</button>
+    <button type="button" onclick="anyOutToIn()">output -> input</button>
   </body>
 </html>

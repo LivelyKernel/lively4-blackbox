@@ -407,18 +407,14 @@ function solveForAny(actualInput, transformation, targetOutput) {
 	  
 	  if(typeof(entity[idx]) === "boolean") {
 	    entity[idx] = !entity[idx];
-	  }
-	  
-	  if(typeof(entity[idx]) === "number") {
+	  } else if(typeof(entity[idx]) === "number") {
 	    var rand = Math.random();
   	  if(rand < 0.5 ){
     	  ++entity[idx];
   	  } else {
   	    --entity[idx];
   	  }
-	  }
-	  
-	  if(typeof(entity[idx]) === "string") {
+	  } else if(typeof(entity[idx]) === "string") {
   	  // lengthening, shortening, or character replacement
   	  var rand = Math.random();
   	  if(rand < 0.1 ){
