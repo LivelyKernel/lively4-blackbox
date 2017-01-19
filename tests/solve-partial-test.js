@@ -1,55 +1,48 @@
 import {assert} from 'node_modules/chai/chai.js'
 import {expect} from 'node_modules/chai/chai.js'
 import '../solve-partial.js'
+import '../numeric-1.2.6.min.js'
 
 describe("Integers", function() {
   describe("1 to 1 relationship", function() {
     it("negation", function() {
-      var transf = function(x) { return -x[0]; };
-      var inputs = [-1, 1,20, 1,-1];
-      var target = [ 5, 5, 5,-6,-6];
-      for(i=0;i<inputs.length;++i){
-        //var solution = solveForNumberToNumber([inputs[i]], transf, target[i]);
-        //var variance = Math.abs(transf(solution) - target[i]);
-        //expect(variance).to.be.at.most(0);
-        solveForNumberToNumber([inputs[i]], transf, target[i]).then((solution) => {
-          transf(solution).should.equal(target[i]);
-          done();
-        },
-        (err) => {
-          done(err);
-        });
-      }
+      var f = function(x) { return -x[0]; };
+      solveForNumberToNumber([1], f, 5).then(sol => { expect(f(sol)).to.equal(5) });
+      solveForNumberToNumber([1], f, -5).then(sol => { expect(f(sol)).to.equal(-5) });
+      solveForNumberToNumber([-1], f, 6).then(sol => { expect(f(sol)).to.equal(6) });
+      solveForNumberToNumber([-1], f, -6).then(sol => { expect(f(sol)).to.equal(-6) });
     });
   
     it("increment", function() {
-      var transf = function(x) { return x[0]+1; };
-      var inputs = [-1, 1, 6, 1,-1];
-      var target = [ 4, 4, 4,-2,-2];
-      for(i=0;i<inputs.length;++i){
-        var solution = solveForNumberToNumber([inputs[i]], transf, target[i]);
-        var variance = Math.abs(transf(solution) - target[i]);
-        expect(variance).to.be.at.most(0);
-      }
+      var f = function(x) { return x[0]+1; };
+      solveForNumberToNumber([1], f, 5).then(sol => { expect(f(sol)).to.equal(5) });
+      solveForNumberToNumber([1], f, -5).then(sol => { expect(f(sol)).to.equal(-5) });
+      solveForNumberToNumber([-1], f, 6).then(sol => { expect(f(sol)).to.equal(6) });
+      solveForNumberToNumber([-1], f, -6).then(sol => { expect(f(sol)).to.equal(-6) });
     });
     
     it("double", function() {
-      var transf = function(x) { return x[0]*2; };
-      var inputs = [-5, 5,10, 5,-5];
-      var target = [ 4, 4, 4,-2,-2];
-      for(i=0;i<inputs.length;++i){
-        var solution = solveForNumberToNumber([inputs[i]], transf, target[i]);
-        var variance = Math.abs(transf(solution) - target[i]);
-        expect(variance).to.be.at.most(0);
-      }
+      var f = function(x) { return x[0]*2; };
+      solveForNumberToNumber([1], f, 5).then(sol => { expect(f(sol)).to.equal(5) });
+      solveForNumberToNumber([1], f, -5).then(sol => { expect(f(sol)).to.equal(-5) });
+      solveForNumberToNumber([-1], f, 6).then(sol => { expect(f(sol)).to.equal(6) });
+      solveForNumberToNumber([-1], f, -6).then(sol => { expect(f(sol)).to.equal(-6) });
     });
   });
   
-  //describe("n to 1 relationship", function() { /* not yet implemented */ });
+  describe("n to 1 relationship", function() {
+    it("addition", function() {
+      var f = function(x) { return x[0]+x[1]; };
+      solveForManyNumbers([1,2], f, 5).then(sol => { expect(f(sol)).to.equal(5) });
+      solveForManyNumbers([1,2], f, -5).then(sol => { expect(f(sol)).to.equal(-5) });
+      solveForManyNumbers([-1,2], f, 6).then(sol => { expect(f(sol)).to.equal(6) });
+      solveForManyNumbers([-1,2], f, -6).then(sol => { expect(f(sol)).to.equal(-6) });
+    });
+  });
 });
 
 
-
+/*
 describe("Floats", function() {
   describe("1 to 1 relationship", function() {
     it("negation", function() {
@@ -90,7 +83,7 @@ describe("Floats", function() {
   describe("n to 1 relationship", function() {  });
   
 });
-
+*/
 /*
 describe("String", function() {
   describe("1 to 1 relationship", function() {
