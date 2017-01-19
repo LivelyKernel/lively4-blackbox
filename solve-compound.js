@@ -110,6 +110,11 @@ async function solveForSingleOutput(actualInput, transformation, targetOutput, a
       for(let i=0; i<affectingInputKeys.length; ++i) {
         result[affectingInputKeys[i]] = resultValues[i];
       }
+    } else {
+      var resultValues = await solveForAny(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+      for(let i=0; i<affectingInputKeys.length; ++i) {
+        result[affectingInputKeys[i]] = resultValues[i];
+      }
     }
     
   }
