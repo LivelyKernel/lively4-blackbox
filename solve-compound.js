@@ -1,5 +1,86 @@
 // assumption: input and output are flat dictionaries
 
+async function solve(actualInput, transformation, targetOutput) { 
+  console.log("solve2 entered");
+  var dependencies = findDependencies(actualInput, transformation);
+  var targetInput = Object.assign({}, actualInput);
+  // 1. find changes output values
+  var actualOutput = transformation(actualInput);
+  var modifiedOutputKeys = Array.from(findVaryingKeys(actualOutput, targetOutput));
+  
+  for(let modifiedOutputKey of modifiedOutputKeys){
+    // 2. find corresponding input values;
+    //    or: output is independent -> no solution
+    var affectingInputKeys = new Set();
+    
+    for (var inputKey in dependencies) {
+      var dependantOutputKeys = dependencies[inputKey];
+      if(dependantOutputKeys.includes(modifiedOutputKey)) {
+        affectingInputKeys.add(inputKey);
+      }
+    }
+    
+    // 3. solving: for each modified output variable, find solution by modifying affecting input keys
+    affectingInputKeys = Array.from(affectingInputKeys);
+    var solutions = await solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
+    for (var solvedInputKey in solutions) {
+      targetInput[solvedInputKey] = solutions[solvedInputKey];
+    }
+  }
+  
+  return targetInput;
+}
+
+async function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
+  
+  // wrap transformation function
+  //function takes an array of values representing the affectingInputKeys
+  //returns the value of the output key we are currently solving for
+  window.actualInput = actualInput;
+  window.affectingInputKeys = affectingInputKeys;
+  window.transformation = transformation;
+  window.modifiedOutputKey = modifiedOutputKey;
+  function strippedTransformation(inputValues) {
+    var modifiedInput = Object.assign({}, window.actualInput);
+    var i=0;
+    window.affectingInputKeys.forEach(function(key){
+      modifiedInput[key] = inputValues[i++];
+    });
+    return window.transformation(modifiedInput)[window.modifiedOutputKey];
+  };
+    
+  //create an array containing just the values of the affectingInputKeys ie. the seed to start solving from
+  var strippedInputArray = [];
+  var i=0;
+  for(let i=0; i<affectingInputKeys.length; ++i) {
+    strippedInputArray[i] = actualInput[affectingInputKeys[i]];
+  }
+  
+  //object to store all the solved input key-value pairs in
+  var result = {};
+  
+  var allAffectingInputKeysAreNumbers = true;
+  for(let affectingInputKey of affectingInputKeys) {
+    if(typeof(actualInput[affectingInputKey]) != "number") {
+      allAffectingInputKeysAreNumbers = false;
+    }
+  }
+  
+  if(allAffectingInputKeysAreNumbers && typeof(targetOutput[modifiedOutputKey]) == "number") {
+    var resultValues = await solveForManyNumbers(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+    for(let i=0; i<affectingInputKeys.length; ++i) {
+      result[affectingInputKeys[i]] = resultValues[i];
+    }
+  } else {
+    var resultValues = await solveForAny(strippedInputArray, strippedTransformation, targetOutput[modifiedOutputKey]);
+    for(let i=0; i<affectingInputKeys.length; ++i) {
+      result[affectingInputKeys[i]] = resultValues[i];
+    }
+  }
+  
+  return result;
+}
+
 
 async function solve2(actualInput, transformation, targetOutput) { 
   console.log("solve2 entered");
@@ -23,7 +104,7 @@ async function solve2(actualInput, transformation, targetOutput) {
     
     // 3. solving: for each modified output variable, find solution by modifying affecting input keys
     affectingInputKeys = Array.from(affectingInputKeys);
-    var solutions = await solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
+    var solutions = await solveForSingleOutput2(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey);
     console.log("solveForSingleOutput returned");
     for (var solvedInputKey in solutions) {
       targetInput[solvedInputKey] = solutions[solvedInputKey];
@@ -33,9 +114,9 @@ async function solve2(actualInput, transformation, targetOutput) {
   return targetInput;
 }
 
-async function solveForSingleOutput(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
+async function solveForSingleOutput2(actualInput, transformation, targetOutput, affectingInputKeys, modifiedOutputKey) {
   console.log("solveForSingleOutput entered");
-  debugger;
+  
   // wrap transformation function
   //function takes an array of values representing the affectingInputKeys
   //returns the value of the output key we are currently solving for
