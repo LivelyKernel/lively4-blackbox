@@ -3,16 +3,21 @@
   <body>
     <script type="text/javascript" src="./genetic-js/js/genetic-0.1.14.js"></script>
     <script type="text/javascript" src="./numeric-1.2.6.min.js"></script>
-    <script type="text/javascript" src="https://lively-kernel.org/lively4/lively4-blackbox/solve-partial.js"></script>
+    <script type="text/javascript" src="./solve-partial.js"></script>
     <script type="text/javascript">
-      
-      // integer manipulation functions
-      var inc = function(x) { return x[0]+1 };
-      var double = function(x) { return x[0]*2 };
-      var magic = function(x) { return (x[0]+1)*2-1 };
-      var watman = function(x) { return 10*(0.1*x[0])^2-(0.1*x[0])^4+2 };
-      
-      // string manipulation functions
+
+      /* TRANSFORMATION FUNCTIONS */
+
+      var inc = function(array) { return array[0]+1 };
+      var double = function(array) { return array[0]*2 };
+      var magic = function(array) { return (array[0]+1)*2-1 };
+      var watman = function(array) { return 10*(0.1*array[0])^2-(0.1*array[0])^4+2 };
+
+      var addP = function(array) { return array[0] + "p"; };
+      var stringLength = function(array) { return array[0].length; };
+      var complex = function(array) { return array[0] + (2* array[1]) - array[2]; };
+      var concat2 = function(array) { return array[0] + array[1]; };
+
       var reverse = function(array) {
         var string = array[0]
         var result = "";
@@ -21,7 +26,7 @@
         }
         return result;
       };
-      
+
       var removeVowels = function(array) {
         var string = array[0];
         var result = "";
@@ -33,161 +38,63 @@
         }
         return result;
       };
-      
-      var addP = function(array) {
-        return array[0] + "p";
-      }
-      
-      // string to string and string to number 
-      var stringLength = function(array) {
-        return array[0].length;
-      };
-      
-      // many numbers
-      var complex = function(array) {
-        return array[0] + (2* array[1]) - array[2];
-      };
-      
-      // many strings
-      var concat2 = function(array) {
-        return array[0] + array[1];
-      }
-      
-      // onclick functions
+
+      /* ONCLICK HANDLERS */
+
       function integerInToOut() {
         var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
         var func = document.getElementById("solve-partial-integer-func").value;
-        if(isNaN(x)) {
-          return;
-        }
-        
-        document.getElementById("solve-partial-integer-y").value = window[func]([x]);;
+
+        document.getElementById("solve-partial-integer-y").value = window[func]([x]);
       }
-      
+
       function integerOutToIn() {
         var x = parseFloat(document.getElementById("solve-partial-integer-x").value);
         var y = parseFloat(document.getElementById("solve-partial-integer-y").value);
         var func = document.getElementById("solve-partial-integer-func").value;
-        if(isNaN(x) || isNaN(y)) {
-          x = 0;
-        }
+
         solveForNumberToNumber([x], window[func], y).then((result) => {
           document.getElementById("solve-partial-integer-x").value = result;
         });
       }
-      
-      function stringInToOut() {
-        var x = document.getElementById("solve-partial-string-x").value;
-        var func = document.getElementById("solve-partial-string-func").value;
-        
-        document.getElementById("solve-partial-string-y").value = window[func]([x]);
-      }
-      
-      function stringOutToIn() {
-        var x = document.getElementById("solve-partial-string-x").value;
-        var y = document.getElementById("solve-partial-string-y").value;
-        var func = document.getElementById("solve-partial-string-func").value;
 
-        solveForStringToString([x], window[func], y).then((result) => {
-          document.getElementById("solve-partial-string-x").value = result;
-        });
-      }
-      
       function manyIntegerInToOut() {
-        var json = "[" + document.getElementById("solve-many-integer-x").value + "]";
-        var x = JSON.parse(json);
+        var x = JSON.parse(document.getElementById("solve-many-integer-x").value);
         var func = document.getElementById("solve-many-integer-func").value;
-        console.log(x);
-        console.log(func);
-        console.log(window[func]);
-        document.getElementById("solve-many-integer-y").value = window[func](x);;
+        var y = window[func](x);
+        document.getElementById("solve-many-integer-y").value = JSON.stringify(y);
       }
-      
+
       function manyIntegerOutToIn() {
-        var json = "[" + document.getElementById("solve-many-integer-x").value + "]";
-        var x = JSON.parse(json);
+        var x = JSON.parse(document.getElementById("solve-many-integer-x").value);
         var y = parseFloat(document.getElementById("solve-many-integer-y").value);
         func = document.getElementById("solve-many-integer-func").value;
-        if(isNaN(y)) {
-          x = 0;
-        }
-        console.log(x);
-        console.log(y);
-        console.log(func);
-        console.log(window[func]);
-        //document.getElementById("solve-many-integer-x").value = solveForManyNumbers(x,window[func],y);
-        solveForManyNumbers(x, window[func], y).then((result) => {
-          document.getElementById("solve-many-integer-x").value = result;
-        });
-      }
-      
-      function stringNumberInToOut() {
-        var x = document.getElementById("solve-string-number-x").value;
-        var func = document.getElementById("solve-string-number-func").value;
-        
-        document.getElementById("solve-string-number-y").value = window[func]([x]);
-      }
-      
-      function stringNumberOutToIn() {
-        var x = document.getElementById("solve-string-number-x").value;
-        var y = document.getElementById("solve-string-number-y").value;
-        var func = document.getElementById("solve-string-number-func").value;
 
-        solveForStringToNumber([x], window[func], y).then((result) => {
-          document.getElementById("solve-string-number-x").value = result;
+        solveForManyNumbers(x, window[func], y).then((result) => {
+          document.getElementById("solve-many-integer-x").value = JSON.stringify(result);
         });
       }
-      
-      function manyStringsInToOut() {
-        var x = [
-          document.getElementById("solve-many-strings-x0").value,
-          document.getElementById("solve-many-strings-x1").value
-        ];
-        var func = document.getElementById("solve-many-strings-func").value;
-        
-        document.getElementById("solve-many-strings-y").value = window[func](x);
-      }
-      
-      function manyStringsOutToIn() {
-        var x = [
-          document.getElementById("solve-many-strings-x0").value,
-          document.getElementById("solve-many-strings-x1").value
-        ];
-        var y = document.getElementById("solve-many-strings-y").value
-        var func = document.getElementById("solve-many-strings-func").value;
-        
-        solveForManyStrings(x, window[func], y).then((result) => {
-          document.getElementById("solve-many-strings-x0").value = result[0];
-          document.getElementById("solve-many-strings-x1").value = result[1];
-        });
-      }
-      
+
       function anyInToOut() {
-        var x = [
-          parseInt(document.getElementById("solve-any-x0").value),
-          parseInt(document.getElementById("solve-any-x1").value)
-        ];
+        var x = JSON.parse(document.getElementById("solve-any-x").value);
         var func = document.getElementById("solve-any-func").value;
-        
-        document.getElementById("solve-any-y").value = window[func](x);
+        var y = window[func](x);
+
+        document.getElementById("solve-any-y").value = JSON.stringify(y);
       }
-      
+
       function anyOutToIn() {
-        var x = [
-          parseInt(document.getElementById("solve-any-x0").value),
-          parseInt(document.getElementById("solve-any-x1").value)
-        ];
-        var y = parseInt(document.getElementById("solve-any-y").value)
+        var x = JSON.parse(document.getElementById("solve-any-x").value);
+        var y = JSON.parse(document.getElementById("solve-any-y").value);
         var func = document.getElementById("solve-any-func").value;
-        
+
         solveForAny(x, window[func], y).then((result) => {
-          document.getElementById("solve-any-x0").value = result[0].toString();
-          document.getElementById("solve-any-x1").value = result[1].toString();
+          document.getElementById("solve-any-x").value = JSON.stringify(result);
         });
       }
     </script>
-    
-    <h3>Integers</h3>
+
+    <h3>Number to Number</h3>
     y = f(x) =
     <select id="solve-partial-integer-func">
       <option value="inc">x+1</option>
@@ -195,62 +102,33 @@
       <option value="magic">2(x+1) - 1</option>
       <option value="watman">10(0.1x)^2 - (0.1x)^4 + 2</option>
     </select><br>
-    x = <input type="text" id="solve-partial-integer-x"><br>
+    x = <input type="text" id="solve-partial-integer-x" value="41"><br>
     y = <input type="text" id="solve-partial-integer-y"><br>
     <button type="button" onclick="integerInToOut()">input -> output</button>
     <button type="button" onclick="integerOutToIn()">output -> input</button>
-    
-    <h3>Strings</h3>
-    y = f(x) =
-    <select id="solve-partial-string-func">
-      <option value="reverse">reverse</option>
-      <option value="removeVowels">remove vowels</option>
-      <option value="addP">add p</option>
-      <option value="stringLength">string length</option>
-    </select><br>
-    x = <input type="text" id="solve-partial-string-x"><br>
-    y = <input type="text" id="solve-partial-string-y"><br>
-    <button type="button" onclick="stringInToOut()">input -> output</button>
-    <button type="button" onclick="stringOutToIn()">output -> input</button>
-    
-    <h3>Many Integers</h3>
+
+    <h3>Many Numbers to Number</h3>
     y = f(x1,x2,x3) =
     <select id="solve-many-integer-func">
       <option value="complex">x1+2*x2-x3</option>
+      <option value="concat2">x0 + x1</option>
+      <option value="double">x0 * 2</option>
+      <option value="inc">x0 + 1</option>
     </select><br>
-    x = <input type="text" id="solve-many-integer-x"><br>
+    x = <input type="text" id="solve-many-integer-x" value="[1,2,3]"><br>
     y = <input type="text" id="solve-many-integer-y"><br>
     <button type="button" onclick="manyIntegerInToOut()">input -> output</button>
     <button type="button" onclick="manyIntegerOutToIn()">output -> input</button>
-    
-    <h3>String To Number</h3>
-    y = f(x) =
-    <select id="solve-string-number-func">
-      <option value="stringLength">string length</option>
-    </select><br>
-    x = <input type="text" id="solve-string-number-x"><br>
-    y = <input type="text" id="solve-string-number-y"><br>
-    <button type="button" onclick="stringNumberInToOut()">input -> output</button>
-    <button type="button" onclick="stringNumberOutToIn()">output -> input</button>
-    
-    <h3>Many Strings</h3>
-    y = f(x) =
-    <select id="solve-many-strings-func">
-      <option value="concat2">concat x0 and x1</option>
-    </select><br>
-    x0 = <input type="text" id="solve-many-strings-x0"><br>
-    x1 = <input type="text" id="solve-many-strings-x1"><br>
-    y = <input type="text" id="solve-many-strings-y"><br>
-    <button type="button" onclick="manyStringsInToOut()">input -> output</button>
-    <button type="button" onclick="manyStringsOutToIn()">output -> input</button>
-    
-    <h3>Any</h3>
+
+    <h3>Arbitrary</h3>
     y = f(x) =
     <select id="solve-any-func">
       <option value="concat2">x0 + x1</option>
+      <option value="complex">x1+2*x2-x3</option>
+      <option value="double">x0 * 2</option>
+      <option value="inc">x0 + 1</option>
     </select><br>
-    x0 = <input type="text" id="solve-any-x0"><br>
-    x1 = <input type="text" id="solve-any-x1"><br>
+    x = <input type="text" id="solve-any-x" value="[&quot;hallo&quot;,&quot;welt&quot;]"><br>
     y = <input type="text" id="solve-any-y"><br>
     <button type="button" onclick="anyInToOut()">input -> output</button>
     <button type="button" onclick="anyOutToIn()">output -> input</button>
