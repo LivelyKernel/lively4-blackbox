@@ -39,6 +39,7 @@
     <script type="text/javascript" src="./genetic-js/js/genetic-0.1.14.js"></script>
     <script type="text/javascript" src="./solve-partial.js"></script>
     <script type="text/javascript" src="./solve-compound.js"></script>
+    <script type="text/javascript" src="./numeric-1.2.6.min.js"></script>
     <script type="text/javascript">
       document.getElementById("genOutput").addEventListener("click", generateOutput);
       document.getElementById("genInput").addEventListener("click", generateInput);
@@ -54,7 +55,7 @@
         var input = JSON.parse(document.getElementById("input").value);
         var output = JSON.parse(document.getElementById("output").value);
         var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
-        solve2(input, func, output).then((targetInput) => {
+        solve(input, func, output).then((targetInput) => {
           console.log("solve2 returned");
           document.getElementById("input").value = JSON.stringify(targetInput);
 

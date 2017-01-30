@@ -113,7 +113,7 @@ function solveForAny(actualInput, transformation, targetOutput) {
 	      entity[idx] = replaceAt(entity[idx], i, String.fromCharCode(entity[idx].charCodeAt(i) +   (Math.floor(Math.random()*2) ? 1 : -1)));
 	    }
 	  }
-
+    
 	  return entity;
   };
 
@@ -131,7 +131,7 @@ function solveForAny(actualInput, transformation, targetOutput) {
 
     if(typeof(this.userData["targetOutput"]) === "number") {
       var opt = this.userData["targetOutput"];
-      var act = (this.userData["transformation"]([entity]));
+      var act = (this.userData["transformation"](entity));
       return -(Math.abs(opt - act));
     }
 
