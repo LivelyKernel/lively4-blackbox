@@ -39,19 +39,11 @@ function solveForNumberToNumber(actualInput, transformation, targetOutput) {
 }
 
 function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
-
   var functionToMinimize = function(inputConfiguration){
     return Math.abs(transformation(inputConfiguration) - targetOutput);
   };
-
-
   var solution = numeric.uncmin(functionToMinimize,actualInputArray).solution;
-  //console.log(solution);
-  // return solution;
-  return new Promise((resolve, reject) => {
-    resolve(solution);
-  });
-
+  return new Promise((resolve, reject) => { resolve(solution); });
 }
 
 function solveForAny(actualInput, transformation, targetOutput) {
@@ -102,18 +94,18 @@ function solveForAny(actualInput, transformation, targetOutput) {
   	  // lengthening, shortening, or character replacement
   	  var rand = Math.random();
   	  if(rand < 0.1 ){
-  	    //shorten
+  	    // shorten
   	    entity[idx] = entity[idx].substr(0, entity[idx].length - 1);
 	    } else if(rand < 0.2){
-	      //lengthen
+	      // lengthen
 	      entity[idx] += 'e';
 	    } else {
-	      // chromosomal drift
+	      // character replacement
 	      var i = Math.floor(Math.random()*entity[idx].length);
-	      entity[idx] = replaceAt(entity[idx], i, String.fromCharCode(entity[idx].charCodeAt(i) +   (Math.floor(Math.random()*2) ? 1 : -1)));
+	      entity[idx] = replaceAt(entity[idx], i, String.fromCharCode(entity[idx].charCodeAt(i) + (Math.floor(Math.random()*2) ? 1 : -1)));
 	    }
 	  }
-    
+
 	  return entity;
   };
 

@@ -56,7 +56,6 @@
         var output = JSON.parse(document.getElementById("output").value);
         var func = eval("var t=" + document.getElementById("transformationString").value + "; t");
         solve(input, func, output).then((targetInput) => {
-          console.log("solve2 returned");
           document.getElementById("input").value = JSON.stringify(targetInput);
 
         });
