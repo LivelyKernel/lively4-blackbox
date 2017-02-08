@@ -43,6 +43,23 @@ function solveForManyNumbers(actualInputArray, transformation, targetOutput) {
     return Math.abs(transformation(inputConfiguration) - targetOutput);
   };
   var solution = numeric.uncmin(functionToMinimize,actualInputArray).solution;
+  
+  for(let i=0; i<10; ++i) {
+    var rectSolution = [];
+    for(let j of solution) {
+      rectSolution.push(parseFloat(j.toFixed(i)));
+    }
+    if(transformation(rectSolution) == targetOutput) {
+      solution = rectSolution;
+      break;
+    }
+  }
+  
+  var rectSolution = [];
+  for(let j of solution) {
+    rectSolution.push(parseFloat(j.toFixed(1)));
+  }
+  
   return new Promise((resolve, reject) => { resolve(solution); });
 }
 
